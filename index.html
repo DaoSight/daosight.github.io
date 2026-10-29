@@ -4,50 +4,205 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>道海知识中枢</title>
+  <meta name="description" content="道海知识中枢：探索宇宙、意识、哲学与存在，记录持续思考与研究。">
+  <title>道海知识中枢｜探索宇宙、意识与存在</title>
   <style>
-    body {
-      max-width: 850px;
-      margin: 60px auto;
-      padding: 24px;
-      font-family: "Microsoft YaHei", sans-serif;
-      line-height: 1.9;
-      color: #283747;
-      background: #f7f8fa;
+    * {
+      box-sizing: border-box;
     }
-    h1 { color: #245b4a; }
-    a { color: #26735b; }
+
+    body {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 24px;
+      font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+      line-height: 1.9;
+      color: #293b35;
+      background: #f5f7f5;
+    }
+
+    header {
+      padding: 48px 32px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #e4efe8, #f5f2e8);
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 12px;
+      color: #245b49;
+      font-size: clamp(30px, 5vw, 44px);
+      letter-spacing: 2px;
+    }
+
+    header p {
+      margin: 0;
+      color: #53675d;
+      font-size: 17px;
+    }
+
+    .intro {
+      margin: 32px 0;
+      padding: 0 8px;
+    }
+
+    .intro h2,
+    .section-title {
+      color: #245b49;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
     .card {
-      background: white;
-      padding: 20px;
-      margin: 16px 0;
-      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #e3e9e4;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 4px 16px rgba(40, 70, 50, 0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 22px rgba(40, 70, 50, 0.09);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+    }
+
+    .card h3 a {
+      color: #245b49;
+      text-decoration: none;
+    }
+
+    .card h3 a:hover,
+    .enter-link:hover {
+      text-decoration: underline;
+    }
+
+    .card p {
+      margin: 0 0 18px;
+      color: #5d6b63;
+    }
+
+    .enter-link {
+      color: #26735b;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .note {
+      margin-top: 36px;
+      padding: 22px 24px;
+      border-left: 4px solid #8caf98;
+      border-radius: 6px;
+      background: #edf3ee;
+    }
+
+    .note p {
+      margin: 0;
+    }
+
+    footer {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid #dce4dd;
+      color: #7a887e;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 24px 16px;
+      }
+
+      header {
+        padding: 36px 20px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
-  <h1>道海知识中枢</h1>
-  <p>探索宇宙、意识、哲学与存在。</p>
+  <header>
+    <h1>道海知识中枢</h1>
+    <p>探索宇宙、意识、哲学与存在</p>
+  </header>
 
-  <div class="card">
-  <h2><a href="daohai/">道海理论</a></h2>
-  <p>思考宇宙起源、时空演化与存在的本质。</p>
-  <p><a href="daohai/">进入栏目 →</a></p>
-</div>
+  <main>
+    <section class="intro">
+      <h2>从问题出发，走向更深的理解</h2>
+      <p>
+        这里是一个持续生长的个人知识空间。
+        我们从宇宙的起源出发，追问意识如何产生，
+        思考古老哲学与现代科学之间的联系，
+        并记录那些尚未得到最终答案的问题。
+      </p>
+    </section>
 
-  <div class="card">
-    <h2>量子心解</h2>
-    <p>从科学前沿与哲学追问的角度，重新理解经典思想。</p>
-  </div>
+    <h2 class="section-title">知识领域</h2>
 
-  <div class="card">
-    <h2>意识与存在</h2>
-    <p>探索意识、信息、物质与主观体验之间的关系。</p>
-  </div>
+    <section class="grid">
+      <article class="card">
+        <h3><a href="daohai/">道海理论</a></h3>
+        <p>
+          探索宇宙起源、时空演化、暗物质、暗能量，
+          以及存在背后的根本问题。
+        </p>
+        <a class="enter-link" href="daohai/">进入栏目 →</a>
+      </article>
 
-  <div class="card">
-    <h2>阅读与研究</h2>
-    <p>记录阅读笔记、研究问题与持续思考。</p>
-  </div>
+      <article class="card">
+        <h3><a href="quantum/">量子心解</a></h3>
+        <p>
+          从科学前沿与哲学追问出发，
+          重新理解《道德经》及其思想的现代意义。
+        </p>
+        <a class="enter-link" href="quantum/">进入栏目 →</a>
+      </article>
+
+      <article class="card">
+        <h3><a href="consciousness/">意识与存在</a></h3>
+        <p>
+          探索意识、信息、物质与主观体验之间的关系，
+          追问为什么信息会拥有感觉。
+        </p>
+        <a class="enter-link" href="consciousness/">进入栏目 →</a>
+      </article>
+
+      <article class="card">
+        <h3><a href="research/">阅读与研究</a></h3>
+        <p>
+          整理阅读笔记、研究资料、灵感记录，
+          以及不同领域之间值得继续追踪的线索。
+        </p>
+        <a class="enter-link" href="research/">进入栏目 →</a>
+      </article>
+    </section>
+
+    <section class="note">
+      <p>
+        <strong>关于这里：</strong>
+        这是一个不断完善的知识体系。
+        已有的科学证据、理论推测与哲学思考将尽可能分别说明，
+        让每个问题都保留继续探索的空间。
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>道海知识中枢 · 记录思考，连接知识，探索未知</p>
+  </footer>
 </body>
 </html>
