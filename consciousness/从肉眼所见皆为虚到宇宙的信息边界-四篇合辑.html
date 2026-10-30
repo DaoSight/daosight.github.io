@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>从「肉眼所见皆为虚」到宇宙的信息边界 · 四篇合辑</title>
+<meta name="author" content="树 · 树的胡言乱语">
+<meta name="description" content="感知、全息、量子与意识：从预测编码到全息原理，一条通往宇宙信息边界的推理链。四篇连载合辑，全文收录。">
+<style>
+:root{
+  --paper:#FCFAF6;
+  --paper-soft:#F5F1E9;
+  --ink:#1E1B16;
+  --ink-2:#48423A;
+  --ink-3:#8A8175;
+  --line:rgba(30,27,22,.10);
+  --line-2:rgba(30,27,22,.06);
+  --accent:#1B4A78;
+  --accent-soft:rgba(27,74,120,.09);
+  --gold:#A98547;
+  --quote-bg:rgba(27,74,120,.045);
+  --quote-line:#B9CEDF;
+  --fs:19px;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","HarmonyOS Sans SC","Microsoft YaHei","Source Han Sans SC",sans-serif;
+  --serif:"Noto Serif SC","Source Han Serif SC","Songti SC",STSong,SimSun,Georgia,serif;
+  --bar-bg:rgba(252,250,246,.86);
+}
+[data-theme="dark"]{
+  --paper:#111318;
+  --paper-soft:#191C22;
+  --ink:#DED8CD;
+  --ink-2:#B0A99D;
+  --ink-3:#918A7D;
+  --line:rgba(255,255,255,.10);
+  --line-2:rgba(255,255,255,.055);
+  --accent:#8CB8DC;
+  --accent-soft:rgba(140,184,220,.10);
+  --gold:#C6A268;
+  --quote-bg:rgba(140,184,220,.06);
+  --quote-line:#31404F;
+  --bar-bg:rgba(17,19,24,.86);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);
+  font-feature-settings:"kern" 1;
+  -webkit-font-smoothing:antialiased;
+  transition:background .3s ease,color .3s ease;
+}
+body[data-font="serif"] .body,
+body[data-font="serif"] blockquote,
+body[data-font="serif"] .body p,
+body[data-font="serif"] .body li{font-family:var(--serif);}
+body[data-font="serif"] .body{letter-spacing:.012em;}
+
+/* ---------- 进度条 ---------- */
+#progress{
+  position:fixed;top:0;left:0;height:2px;width:0;
+  background:linear-gradient(90deg,var(--accent),var(--gold));
+  z-index:100;transition:width .1s linear;
+}
+/* ---------- 顶栏 ---------- */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:60;
+  background:transparent;border-bottom:1px solid transparent;
+  transition:background .32s ease,border-color .32s ease,box-shadow .32s ease;
+}
+.topbar.solid{
+  backdrop-filter:saturate(180%) blur(16px);
+  -webkit-backdrop-filter:saturate(180%) blur(16px);
+  background:var(--bar-bg);
+  border-bottom-color:var(--line-2);
+  box-shadow:0 1px 18px rgba(20,20,20,.05);
+}
+.topbar-inner{
+  max-width:1160px;margin:0 auto;padding:0 28px;height:56px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.brand{display:flex;align-items:center;gap:10px;font-size:13.5px;color:rgba(226,233,240,.72);text-decoration:none;letter-spacing:.02em;transition:color .3s;}
+.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px rgba(169,133,71,.16);}
+.brand b{color:#EAE6DC;font-weight:600;transition:color .3s;}
+.topbar.solid .brand{color:var(--ink-3);}
+.topbar.solid .brand b{color:var(--ink);}
+.tools{display:flex;align-items:center;gap:6px;}
+.btn{
+  border:1px solid rgba(255,255,255,.20);background:transparent;color:rgba(226,233,240,.80);
+  font-family:inherit;font-size:12.5px;padding:6px 11px;border-radius:999px;
+  cursor:pointer;transition:.2s;line-height:1;letter-spacing:.02em;
+  backdrop-filter:blur(4px);
+}
+.btn:hover{color:#fff;border-color:rgba(255,255,255,.45);background:rgba(255,255,255,.10);}
+.topbar.solid .btn{border-color:var(--line);color:var(--ink-2);}
+.topbar.solid .btn:hover{color:var(--ink);border-color:var(--accent);background:var(--accent-soft);}
+
+/* ---------- 封面 ---------- */
+.hero{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(1200px 460px at 50% -140px,rgba(90,140,190,.30),transparent 68%),
+    radial-gradient(760px 380px at 12% 118%,rgba(169,133,71,.16),transparent 70%),
+    linear-gradient(168deg,#0B1220 0%,#131A2A 46%,#1A2233 100%);
+  color:#E9E4DA;
+  padding:150px 28px 96px;
+  text-align:center;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:
+    radial-gradient(1.4px 1.4px at 18% 26%,rgba(255,255,255,.85),transparent),
+    radial-gradient(1.1px 1.1px at 72% 18%,rgba(255,255,255,.65),transparent),
+    radial-gradient(1.6px 1.6px at 87% 62%,rgba(255,255,255,.75),transparent),
+    radial-gradient(1px 1px at 34% 74%,rgba(255,255,255,.55),transparent),
+    radial-gradient(1.2px 1.2px at 56% 44%,rgba(255,255,255,.6),transparent),
+    radial-gradient(1px 1px at 8% 58%,rgba(255,255,255,.5),transparent),
+    radial-gradient(1.3px 1.3px at 64% 86%,rgba(255,255,255,.45),transparent),
+    radial-gradient(1px 1px at 92% 34%,rgba(255,255,255,.5),transparent),
+    radial-gradient(1px 1px at 44% 12%,rgba(255,255,255,.45),transparent);
+  opacity:.9;
+}
+.hero-inner{position:relative;max-width:820px;margin:0 auto;z-index:1;}
+.kicker{
+  display:inline-block;font-size:12.5px;letter-spacing:.28em;text-transform:uppercase;
+  color:#B8C6D6;border:1px solid rgba(184,198,214,.28);
+  padding:7px 16px 7px 19px;border-radius:999px;margin:0 0 34px;
+}
+.hero h1{
+  font-size:clamp(28px,4.6vw,46px);line-height:1.34;margin:0 0 22px;
+  font-weight:700;letter-spacing:.01em;
+  background:linear-gradient(96deg,#FFFFFF 0%,#DCE6F0 54%,#C8B183 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero .sub{
+  font-size:clamp(14px,1.8vw,17px);line-height:1.9;color:#A8B4C4;margin:0 auto 40px;max-width:620px;
+}
+.hero-meta{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:26px;
+  font-size:12.5px;color:#8E9BAB;letter-spacing:.06em;
+  padding-top:28px;border-top:1px solid rgba(255,255,255,.10);
+  max-width:560px;margin:0 auto;
+}
+.hero-meta b{color:#CBD5E1;font-weight:600;}
+.scroll-hint{margin-top:46px;font-size:11px;letter-spacing:.24em;color:#7B8798;}
+
+/* ---------- 布局 ---------- */
+.layout{
+  max-width:1160px;margin:0 auto;padding:0 28px 120px;
+  display:grid;grid-template-columns:236px minmax(0,1fr);gap:64px;
+  align-items:start;
+}
+/* ---------- 目录 ---------- */
+.toc{position:sticky;top:84px;max-height:calc(100vh - 120px);overflow:auto;padding:56px 4px 40px 0;}
+.toc::-webkit-scrollbar{width:4px;}
+.toc::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px;}
+.toc-title{
+  font-size:11px;letter-spacing:.24em;color:var(--ink-3);text-transform:uppercase;
+  margin:0 0 18px;padding-left:12px;
+}
+.toc nav{display:flex;flex-direction:column;gap:1px;}
+.toc a{
+  display:block;font-size:12.8px;line-height:1.55;color:var(--ink-3);text-decoration:none;
+  padding:6px 10px 6px 12px;border-left:2px solid transparent;border-radius:0 5px 5px 0;
+  transition:.16s;
+}
+.toc a:hover{color:var(--ink);background:var(--accent-soft);}
+.toc a.lv1{font-weight:600;color:var(--ink-2);margin-top:14px;font-size:12.5px;}
+.toc a.lv1:first-child{margin-top:0;}
+.toc a.lv2{padding-left:12px;}
+.toc a.lv3{padding-left:26px;font-size:12.2px;}
+.toc a.active{color:var(--accent);border-left-color:var(--accent);background:var(--accent-soft);}
+
+/* ---------- 文章 ---------- */
+article{min-width:0;padding-top:8px;}
+.part{padding:64px 0 24px;}
+.part:first-child{padding-top:72px;}
+.part-head{margin:0 0 44px;padding-bottom:30px;border-bottom:1px solid var(--line);}
+.part-index{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;}
+.part-no{
+  font-family:var(--serif);font-size:40px;line-height:1;font-weight:700;
+  color:transparent;-webkit-text-stroke:1.2px var(--accent);opacity:.55;
+  letter-spacing:-.02em;
+}
+.part-label{font-size:11.5px;letter-spacing:.26em;color:var(--gold);text-transform:uppercase;}
+.part-title{
+  font-size:clamp(21px,2.5vw,27px);line-height:1.5;font-weight:700;
+  margin:0 0 16px;color:var(--ink);letter-spacing:.005em;
+}
+.part-sub{display:flex;flex-wrap:wrap;gap:18px;font-size:12px;color:var(--ink-3);letter-spacing:.02em;}
+.part-sub a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-soft);padding-bottom:1px;}
+.part-sub a:hover{border-bottom-color:var(--accent);}
+
+.body{font-size:var(--fs);line-height:1.95;color:var(--ink-2);}
+.body p{margin:0 0 1.15em;letter-spacing:.012em;}
+.body p.note{color:var(--ink-3);font-size:.86em;letter-spacing:.06em;margin:2.2em 0 .6em;}
+.body p.arrow{text-align:center;color:var(--accent);opacity:.65;margin:.4em 0 .4em;font-size:.95em;}
+.body h2{
+  position:relative;font-size:1.26em;line-height:1.62;font-weight:700;color:var(--accent);
+  margin:2.5em 0 .95em;letter-spacing:.005em;scroll-margin-top:84px;
+}
+.body h2::before{
+  content:"";display:block;width:34px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,var(--gold),rgba(169,133,71,0));
+  margin-bottom:16px;
+}
+.body h3{
+  position:relative;font-size:1.02em;line-height:1.7;font-weight:700;color:var(--ink);
+  margin:2em 0 .7em;padding-left:14px;scroll-margin-top:84px;
+}
+.body h3::before{
+  content:"";position:absolute;left:0;top:.55em;width:4px;height:.98em;border-radius:2px;
+  background:var(--accent);opacity:.75;
+}
+.body strong{font-weight:700;color:var(--ink);}
+.body em{font-style:normal;color:var(--accent);}
+.body blockquote{
+  margin:1.6em 0;padding:1.05em 1.5em;
+  background:var(--quote-bg);
+  border-left:3px solid var(--quote-line);
+  border-radius:0 8px 8px 0;
+  color:var(--ink-2);font-size:.96em;line-height:1.9;
+}
+.body blockquote p{margin:0 0 .6em;}
+.body blockquote p:last-child{margin-bottom:0;}
+.body ul,.body ol{margin:1.2em 0 1.4em;padding-left:1.35em;}
+.body li{margin:.35em 0;line-height:1.9;}
+.body li::marker{color:var(--accent);}
+.body hr{
+  border:0;height:1px;width:44px;margin:3.2em auto;background:var(--line);
+}
+.body img.pic{
+  display:block;max-width:100%;height:auto;margin:2.1em auto;
+  border-radius:10px;cursor:zoom-in;
+  box-shadow:0 6px 22px rgba(20,20,20,.09);
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.body img.pic:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(20,20,20,.14);}
+[data-theme="dark"] .body img.pic{box-shadow:0 6px 22px rgba(0,0,0,.5);}
+
+/* ---------- 页脚 ---------- */
+.site-foot{
+  border-top:1px solid var(--line);background:var(--paper-soft);
+  padding:64px 28px 80px;text-align:center;
+}
+.foot-inner{max-width:640px;margin:0 auto;}
+.foot-inner .mark{font-family:var(--serif);font-size:15px;color:var(--ink-2);letter-spacing:.08em;margin:0 0 14px;}
+.foot-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 22px;margin:24px 0 26px;}
+.foot-links a{font-size:12.5px;color:var(--ink-3);text-decoration:none;border-bottom:1px solid transparent;}
+.foot-links a:hover{color:var(--accent);border-bottom-color:var(--accent);}
+.foot-note{font-size:11.5px;line-height:2;color:var(--ink-3);letter-spacing:.03em;}
+
+/* ---------- 图片灯箱 ---------- */
+#lightbox{
+  position:fixed;inset:0;z-index:200;display:none;
+  background:rgba(12,14,18,.94);
+  padding:40px;
+  align-items:center;justify-content:center;
+  cursor:zoom-out;
+  backdrop-filter:blur(4px);
+}
+#lightbox.show{display:flex;}
+#lightbox img{max-width:100%;max-height:100%;border-radius:6px;box-shadow:0 20px 60px rgba(0,0,0,.6);}
+#lightbox .hint{
+  position:absolute;bottom:24px;left:0;right:0;text-align:center;
+  font-size:11.5px;color:rgba(255,255,255,.45);letter-spacing:.16em;
+}
+#toTop{
+  position:fixed;right:26px;bottom:26px;z-index:70;
+  width:44px;height:44px;border-radius:50%;
+  border:1px solid var(--line);background:var(--paper);
+  color:var(--ink-2);cursor:pointer;font-size:15px;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:.25s;
+  box-shadow:0 6px 20px rgba(0,0,0,.10);
+}
+#toTop.show{opacity:1;pointer-events:auto;}
+#toTop:hover{border-color:var(--accent);color:var(--accent);}
+
+@media (max-width:980px){
+  #menuBtn{display:inline-block!important;}
+  .layout{grid-template-columns:minmax(0,1fr);gap:0;padding:0 22px 80px;}
+  .toc{
+    position:fixed;inset:56px 0 0 0;z-index:55;
+    background:var(--paper);padding:28px 24px 60px;
+    max-height:none;display:none;overflow:auto;
+  }
+  .toc.open{display:block;}
+  .toc a{font-size:14px;padding:10px 12px;}
+  .hero{padding:104px 22px 62px;}
+  .part{padding:48px 0 16px;}
+  .body{font-size:calc(var(--fs) - 1px);}
+  #toTop{right:18px;bottom:18px;}
+}
+@media (max-width:560px){
+  .topbar-inner{padding:0 16px;gap:8px;}
+  .brand{font-size:12.5px;}
+  .brand span:last-child{display:none;}
+  .btn{padding:6px 9px;font-size:11.5px;}
+  .tools{gap:4px;}
+  .hero-meta{gap:16px;font-size:11.5px;}
+  .part-no{font-size:32px;}
+  .body blockquote{padding:.9em 1.1em;margin:1.3em 0;}
+}
+@media print{
+  .topbar,.toc,#toTop,#progress,#lightbox{display:none!important;}
+  .hero{background:#fff;color:#111;}
+  .hero h1{color:#111;-webkit-text-fill-color:#111;}
+  body{background:#fff;}
+}
+</style>
+</head>
+<body data-font="serif">
+<div id="progress"></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#top"><span class="dot"></span><b>树的胡言乱语</b><span>· 四篇合辑</span></a>
+    <div class="tools">
+      <button class="btn" id="menuBtn" style="display:none">目录</button>
+      <button class="btn" id="fontBtn">衬线</button>
+      <button class="btn" id="sizeBtn">字号</button>
+      <button class="btn" id="themeBtn">夜间</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="kicker">树的胡言乱语 · 系列长文</p>
+      <h1>从「肉眼所见皆为虚」<br>到宇宙的信息边界</h1>
+      <p class="sub">感知、全息、量子与意识 —— 我们体验到的世界，并不等于世界本身。<br>四篇连载，一条从视网膜延伸到黑洞视界的推理链。</p>
+      <div class="hero-meta">
+        <span><b>4</b> 篇连载</span>
+        <span><b>7,823</b> 字</span>
+        <span><b>25</b> 节</span>
+        <span><b>25</b> 幅插图</span>
+      </div>
+      <div class="scroll-hint">向下开始阅读</div>
+    </div>
+  </section>
+
+  <div class="layout">
+    <aside class="toc">
+      <p class="toc-title">目录</p>
+      <nav id="tocNav"></nav>
+    </aside>
+
+    <article>
+
+      <section class="part" id="part1">
+        <header class="part-head">
+          <div class="part-index">
+            <span class="part-no">01</span>
+            <span class="part-label">第 1 篇</span>
+          </div>
+          <h1 class="part-title" data-short="感知、全息、量子与意识">从“肉眼所见皆为虚”到宇宙的信息边界：感知、全息、量子与意识（一）</h1>
+          <div class="part-sub">
+            <span>2,095 字 · 6 图</span>
+            <a href="https://mp.weixin.qq.com/s/_CBApJtvwpD4adqIwnJldA" target="_blank" rel="noopener">微信公众号原文 ↗</a>
+          </div>
+        </header>
+        <div class="body">
+<img alt="" class="pic" decoding="async" loading="lazy" src="images/art1-1.webp"/><h2>1.引言：我们看到的，究竟是不是世界本身？</h2><p>“肉眼所见皆为虚”乍听像一句玄学。</p><p>如果眼睛看到的东西都是“虚”，那么眼前的桌子、树木、山河、星辰，难道都不存在吗？</p><p>当然不是。</p><p>这句话真正值得思考的地方，不是“世界不存在”，而是：</p><blockquote><p><strong>我们所体验到的世界，并不等于世界本身。</strong></p></blockquote><p>眼睛看到的，是光经过物体反射后进入视网膜形成的信号；耳朵听到的，是空气或水中的压力变化；鼻子闻到的，是分子与受体相互作用产生的神经信号。</p><p>最终，我们所体验到的“世界”，是大脑根据这些输入建立起来的一种内部模型。</p><p>这件事情一旦想清楚，就会出现一个非常奇妙的问题：</p><blockquote><p>如果每一种生物都是通过自己的感官系统和神经系统“生成”一个世界，那么我们所谓的现实，会不会本质上就是信息经过某种结构重新组织之后的结果？</p></blockquote><p>从这里出发，我们可以一路走向预测编码、全息原理、量子信息、黑洞，甚至意识和宇宙本身。</p><p>这条路很大胆，但也必须保持一个基本原则：</p><blockquote><p><strong>哪些是已经建立的科学，哪些是合理的推测，哪些只是哲学假设，必须始终分清。</strong></p></blockquote><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art1-2.webp"/><h2>2.我们并不是直接看见世界，而是在大脑中“生成”世界</h2><p>想象一个人站在树前。</p><p>我们通常会认为：</p><blockquote><p>“我看到了那棵树。”</p></blockquote><p>但从物理过程来看，并不是“树”进入了大脑。</p><p>真正发生的是：</p><p>太阳光照射树木 → 树叶和树干反射、吸收不同波长的光 → 光进入眼睛 → 经过角膜、晶状体 → 投射到视网膜 → 光感受器产生神经信号 → 神经网络进行加工 → 大脑形成“那里有一棵树”的知觉。</p><p>因此，大脑真正接收到的不是“树”，而是某种经过物理过程编码后的信息。</p><p>更有意思的是，视网膜本身只是二维的。</p><p>然而我们体验到的世界却是三维的：</p><ul><li>有远近；</li><li>有深度；</li><li>有形状；</li><li>有运动；</li><li>有遮挡关系。</li></ul><p>也就是说：</p><blockquote><p><strong>大脑从有限的、低维的感官信息中，重建出了一个高维的空间世界。</strong></p></blockquote><p>这已经非常接近一个“逆问题”。</p><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art1-3.webp"/><h2>3.不同生物，实际上生活在不同的“感知世界”里</h2><p>如果把这个思想继续推开，就会发现：</p><p>所谓“世界”，对于不同生命而言，并不是完全相同的体验。</p><p>人类是高度依赖视觉的动物。</p><p>我们习惯于认为：</p><blockquote><p>看见，就是知道。</p></blockquote><p>但对于其他动物，这个假设并不成立。</p><p>蜜蜂能够感知紫外线。对人类而言普通的花，在蜜蜂的感知世界中可能具有完全不同的视觉结构。</p><p>蛇能够感知红外辐射。</p><p>某些动物能够对电场极其敏感。</p><p>蝙蝠通过回声定位获得空间信息。</p><p>齿鲸也能够利用回声定位，而须鲸则主要依靠听觉和其他感知方式，并不能简单归入“用声呐看世界”。</p><p>因此可以做一个非常形象的比喻：</p><blockquote><p>人类通过光构造世界，蝙蝠通过回声构造空间，某些蛇把温度分布纳入世界模型，其他动物则通过完全不同的信号建立自己的现实。</p></blockquote><p>它们并不是生活在不同的宇宙。</p><p>而是在：</p><blockquote><p><strong>同一个物理宇宙中，运行不同的“信息解码器”。</strong></p></blockquote><p>所以，“现实”至少可以分成两个层面：</p><p><strong>客观存在的物理过程</strong></p><p>以及</p><p><strong>生命系统对这些过程形成的经验模型。</strong></p><p>这两者不能简单画等号。</p><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art1-4.webp"/><h2>4.大脑不是摄像机，而更像一个不断预测世界的系统</h2><p>传统直觉认为：</p><blockquote><p>外界刺激 → 大脑接收 → 形成知觉。</p></blockquote><p>现代神经科学中一个非常重要的思想，则更加主动：</p><blockquote><p><strong>大脑不是单纯接收世界，而是在不断预测世界。</strong></p></blockquote><p>例如你远远看到一个模糊的人影。</p><p>你的眼睛获得的信息可能非常有限。</p><p>但你可能马上判断：</p><p>“那是一个人。”</p><p>为什么？</p><p>因为大脑并不是从零开始处理每一个像素，而是在利用过去的经验建立假设：</p><blockquote><p>“在这种场景下，出现一个人的概率很高。”</p></blockquote><p>然后新的感官信息不断回来：</p><p>预测 → 感官输入 → 预测误差 → 修正模型 → 新预测。</p><p>于是我们看到的世界，并不是单纯由外界输入决定的。</p><p>它是：</p><blockquote><p><strong>外部信息与内部模型共同作用的结果。</strong></p></blockquote><p>这也解释了为什么同一件事情，不同的人可能产生完全不同的体验。</p><p>我们看到的并不只是对象，还包含：</p><ul><li>记忆；</li><li>经验；</li><li>期待；</li><li>情绪；</li><li>注意力；</li><li>概念。</li></ul><p>所以，大脑更像一台不断运行的“世界生成器”。</p><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art1-5.webp"/><h2>5.这与全息原理有什么相似之处？</h2><p>到了这里，就可以进入我们讨论中最有意思的连接。</p><p>物理学中的全息原理提出了一个非常反直觉的思想：</p><blockquote><p><strong>一个空间区域中的物理信息，原则上可以由其低维边界上的信息描述。</strong></p></blockquote><p>它最深刻的来源之一，是黑洞热力学：黑洞熵只与事件视界的面积有关。</p><p>注意这里最惊人的地方：</p><p>通常我们直觉认为，一个三维空间能够容纳的信息应该和体积有关。</p><p>但黑洞告诉我们：</p><blockquote><p>最大的信息容量只与面积有关。</p></blockquote><p>于是产生了“全息原理”。</p><p>它并不是说：</p><blockquote><p>“宇宙其实就是一张二维照片。”</p></blockquote><p>而是说：</p><blockquote><p><strong>描述一个区域全部物理信息所需要的自由度，可能可以由它的低维边界来编码。</strong></p></blockquote><p>后来在特定的理论框架中，AdS/CFT 对偶把这种思想发展成了非常精确的数学对应：</p><blockquote><p>一个具有引力的高维“体空间”，与一个低一维的量子场论之间存在对偶描述。</p></blockquote><p>这里的“对偶”不是“一个东西复制另一个东西”，而是：</p><blockquote><p><strong>同一个物理内容可以用两套看起来完全不同的理论描述。</strong></p></blockquote><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art1-6.webp"/><h2>6.大脑预测编码与全息编码：相似在哪里？</h2><p>现在可以把两者放在一起。</p><p>大脑面对的问题：</p><blockquote><p>已知有限的感官输入，如何恢复一个外部世界模型？</p></blockquote><p>全息理论面对的问题：</p><blockquote><p>已知边界上的信息，如何描述体空间中的物理状态？</p></blockquote><p>两者都具有一个共同的数学味道：</p><blockquote><p><strong>从部分信息、边界条件或低维表示，恢复隐藏的整体结构。</strong></p></blockquote><p>可以抽象成：</p><p>编码信息--&gt;隐藏结构</p><p>对于大脑：</p><p>感官输入--&gt;世界模型</p><p>对于全息：</p><p>边界量子信息--&gt;体空间描述</p><p>这两者都属于某种“逆问题”。</p><p class="note">(未完待续)</p>
+        </div>
+      </section>
+
+      <section class="part" id="part2">
+        <header class="part-head">
+          <div class="part-index">
+            <span class="part-no">02</span>
+            <span class="part-label">第 2 篇</span>
+          </div>
+          <h1 class="part-title" data-short="图灵机、量子信息与生命">从“肉眼所见皆为虚”到宇宙的信息边界（二）</h1>
+          <div class="part-sub">
+            <span>1,968 字 · 6 图</span>
+            <a href="https://mp.weixin.qq.com/s/4fTbkRnGkv1ze7jDuhVN5w" target="_blank" rel="noopener">微信公众号原文 ↗</a>
+          </div>
+        </header>
+        <div class="body">
+<p class="note">(续前文)</p><img alt="" class="pic" decoding="async" loading="lazy" src="images/art2-1.webp"/><h2>7.但不能因此说“大脑就一定是一个全息系统”</h2><p>这里必须踩一下刹车。并非是对该命题的否认，而是目前没有证据。相关研究迄今为止仅停留在假说阶段。</p><p>当下的学科前沿均没有证据证明人思维是量子化的。因此大脑预测编码和物理学全息原理，目前没有被证明具有直接的数学同构关系。</p><p>它们相似的是：</p><ul><li>信息压缩；</li><li>隐变量；</li><li>边界/输入约束；</li><li>从有限信息恢复整体；</li><li>分布式信息；</li><li>生成模型。</li></ul><p>但它们回答的问题不同。</p><p>预测编码主要研究：</p><blockquote><p><strong>生命如何从感官信息形成对世界的内部模型。</strong></p></blockquote><p>全息原理研究：</p><blockquote><p><strong>物理系统的自由度如何在不同维度的描述之间对应。</strong></p></blockquote><p>一个主要属于认知科学和神经科学。</p><p>另一个属于量子引力和理论物理。</p><p>所以比较二者最稳妥的说法不是：</p><blockquote><p>“大脑就是宇宙全息原理的缩小版。”</p></blockquote><p>而是：</p><blockquote><p><strong>它们可能体现了一种共同的信息论思想：整体结构可以通过分布式的关系和有限的约束信息被重建，而不必逐点复制整个整体。</strong></p></blockquote><p>这已经足够令人惊奇。</p><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art2-2.webp"/><h2>8.为什么大脑看起来比传统计算机高效得多？</h2><p>这又把我们带到另一个问题：</p><blockquote><p>如果大脑也在“计算世界”，为什么它不需要像超级计算机那样消耗巨大能量？</p></blockquote><p>人脑大约只有一个很有限的功率预算，却可以完成：</p><ul><li>视觉识别；</li><li>语言理解；</li><li>空间导航；</li><li>社交推理；</li><li>运动控制；</li><li>记忆；</li><li>学习。</li></ul><p>传统计算机如果采用非常粗暴的方式去模拟一个复杂世界，需要巨大的计算资源。</p><p>但生物系统并没有这么做。</p><p>大脑并没有计算：</p><blockquote><p>“世界上每一个粒子现在在哪里。”</p></blockquote><p>它采用的是高度压缩的世界模型。</p><p>看到一个苹果时，并不需要计算苹果的每个原子。</p><p>它只需要识别：</p><blockquote><p>一个符合“苹果”这个概念的结构。</p></blockquote><p>所以大脑的效率可能来自：</p><ul><li>稀疏编码；</li><li>分布式编码；</li><li>并行处理；</li><li>预测；</li><li>反馈；</li><li>层级模型；</li><li>信息压缩；</li><li>身体与环境的直接耦合。</li></ul><p>这里有一个非常重要的观点：</p><blockquote><p><strong>大脑可能根本不是在“模拟整个世界”，而是在寻找对当前生存任务最有用的世界表示。</strong></p></blockquote><p>这与计算机从第一性原理暴力模拟完全不同。</p><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art2-3.webp"/><h2>9.生物并不只是“计算世界”，而是参与世界</h2><p>这是理解生命系统效率的一个关键。</p><p>计算机通常可以被抽象成：</p><blockquote><p>输入 → 计算 → 输出。</p></blockquote><p>而生物系统更像：</p><blockquote><p>环境 ↔ 身体 ↔ 神经系统 ↔ 行为 ↔ 环境。</p></blockquote><p>例如鸟飞行。</p><p>鸟并不会先在大脑中完整求解空气动力学方程，然后再计算下一次翅膀应该怎么扇。</p><p>它的身体形态、肌肉、神经系统和环境共同形成一个动态系统。</p><p>因此，一部分“计算”实际上被：</p><blockquote><p><strong>物理结构本身承担了。</strong></p></blockquote><p>这就是具身性的重要思想。</p><p>生命不是站在世界外面计算世界。</p><p>生命本身就是世界的一部分。</p><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art2-4.webp"/><h2>10.那么，大脑是不是一种“量子系统”？</h2><p>这时候很容易产生一个大胆的推论：</p><blockquote><p>大脑这种整体性、分布式、自组织的信息结构，会不会本质上就是量子化的？</p></blockquote><p>必须区分两个意思。</p><p>如果说“量子化”是严格的物理含义：</p><blockquote><p>大脑通过量子叠加和量子纠缠执行主要的认知计算。</p></blockquote><p>那么目前没有充分证据。</p><p>大脑是一个温暖、潮湿、强烈相互作用的生物系统，宏观量子相干非常难维持。</p><p>确实存在一些量子生物学现象，但这与“意识主要是量子计算”是两回事。</p><hr/><p>然而，如果“量子化”指的是一种更宽泛的信息组织直觉：</p><blockquote><p>信息不是简单地一个比特接着一个比特排列，而是通过大量关系、关联、整体状态和概率结构组织起来。</p></blockquote><p>那么大脑确实表现出了许多非常值得注意的类似特征：</p><ul><li>分布式信息；</li><li>非线性；</li><li>整体涌现；</li><li>强反馈；</li><li>状态依赖；</li><li>大规模并行；</li><li>自组织。</li></ul><p>所以更严谨的说法是：</p><blockquote><p><strong>大脑未必是量子计算机，但它显然也不是我们想象中的那种简单串行图灵机。</strong></p></blockquote><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art2-5.webp"/><h2>11.图灵机、量子信息与生命信息：三个不同层次</h2><p>可以把三种信息组织方式粗略地放在一起。</p><h3>经典图灵机</h3><p>核心是：</p><blockquote><p>符号 + 状态 + 规则。</p></blockquote><p>典型形式：</p><p>二进制符号--&gt;状态转移--&gt;二进制符号</p><p>它非常适合描述：</p><ul><li>算法；</li><li>逻辑；</li><li>程序；</li><li>离散计算。</li></ul><hr/><h3>量子信息</h3><p>核心不是简单的“0或1”，而是量子态以及不同状态之间的关系。</p><p>量子系统具有：</p><ul><li>叠加；</li><li>纠缠；</li><li>相位；</li><li>测量。</li></ul><p>因此信息不能简单地理解成一个个独立比特。</p><hr/><h3>生物信息</h3><p>生命系统更进一步。</p><p>信息不仅存在于神经元内部，还存在于：</p><ul><li>神经元之间；</li><li>身体与环境之间；</li><li>基因与环境之间；</li><li>感知与行动之间。</li></ul><p>生命的计算过程和它自身的物理结构密不可分。</p><p>因此可以提出一个很有启发性的比较：</p><blockquote><p><strong>图灵机更像“执行程序”；量子系统更像“演化关系”；生命系统更像“通过自组织与环境共同形成状态”。</strong></p></blockquote><p>这三者不能简单等同，但确实代表了三种不同的信息组织直觉。</p><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art2-6.webp"/><h2>12.黑洞会有意识吗？</h2><p>当我们讨论全息原理时，黑洞是无法绕开的。</p><p>黑洞最令人震撼的地方之一，是它把：</p><blockquote><p>引力、热力学、量子力学、信息</p></blockquote><p>联系到了一起。</p><p>尤其是黑洞信息问题。</p><p>如果一个物体掉进黑洞，它的信息究竟去了哪里？</p><p>如果信息真的消失，就会冲击量子力学的基本原则。</p><p>如果信息没有消失，那么它究竟以什么形式存在？</p><p>全息原理提供了一种令人惊讶的可能：</p><blockquote><p><strong>黑洞内部的信息，可以由事件视界上的量子自由度描述。</strong></p></blockquote><p>于是我们之前讨论的“边界编码”就有了物理意义。</p><p>既然黑洞提供了信息的某种组织形式，那么自然而然就会产生一个大胆的猜想：黑洞会有意识吗？</p><p class="note">(未完待续)</p>
+        </div>
+      </section>
+
+      <section class="part" id="part3">
+        <header class="part-head">
+          <div class="part-index">
+            <span class="part-no">03</span>
+            <span class="part-label">第 3 篇</span>
+          </div>
+          <h1 class="part-title" data-short="虚幻与真实">从“肉眼所见皆为虚”到宇宙的信息边界（三）：虚幻与真实</h1>
+          <div class="part-sub">
+            <span>1,720 字 · 7 图</span>
+            <a href="https://mp.weixin.qq.com/s/GRh70HAAh3fhF4E8Co3uXg" target="_blank" rel="noopener">微信公众号原文 ↗</a>
+          </div>
+        </header>
+        <div class="body">
+<p class="note">（续前文）</p><img alt="" class="pic" decoding="async" loading="lazy" src="images/art3-1.webp"/><h2>13.能不能进一步猜想：黑洞表面是不是存在一个“思维”？</h2><p>这是我们讨论中最大胆的一步。</p><p>如果：</p><blockquote><p>边界信息能够描述体空间，</p></blockquote><p>那么是否意味着：</p><blockquote><p>边界上有一个类似大脑的东西，在“生成”内部世界？</p></blockquote><p>答案是：</p><p><strong>没有这样的物理证据。</strong></p><p>这里必须区分：信息、计算和意识的区别。</p><p>硬盘里有信息。</p><p>程序可以处理信息。</p><p>但这并不意味着硬盘本身具有意识。</p><p>因此：</p><blockquote><p>全息原理不能推出黑洞表面存在一个“观察者”。</p></blockquote><p>但是作为哲学问题，它非常有意思。</p><p>因为它迫使我们问：</p><blockquote><p><strong>信息组织到什么程度，才会产生“观察者”？</strong></p></blockquote><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art3-2.webp"/><h2>14.如果宇宙也是某种信息系统呢？</h2><p>再向前走一步：</p><p>如果物理世界的深层结构确实可以用量子信息描述，那么是否可以说：</p><blockquote><p>宇宙本质上不是“物质”，而是“信息关系”？</p></blockquote><p>这是一个非常活跃、但仍然没有最终答案的思想方向。</p><p>在这个视角下：</p><ul><li>粒子是状态；</li><li>相互作用是关系；</li><li>量子纠缠是关联；</li><li>空间可能是关系结构；</li><li>引力可能与信息结构有关。</li></ul><p>于是可以提出一个非常大胆的图景：</p><p>量子信息--&gt;纠缠结构--&gt;空间几何--&gt;物理世界</p><p>这并不是已经完成的宇宙理论，而是现代量子引力研究中值得关注的一类思想。</p><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art3-3.webp"/><h2>15.如果空间本身来自信息，那么“距离”会不会也是信息关系？</h2><p>我们通常认为：</p><blockquote><p>空间先在那里，然后物体存在于空间中。</p></blockquote><p>但在某些量子引力思想中，可能恰恰相反：</p><blockquote><p><strong>空间的几何关系，是更底层信息关系的涌现。</strong></p></blockquote><p>如果两个系统之间的量子纠缠关系改变，那么某种意义上的“几何距离”也可能发生变化。</p><p>这就是为什么现代量子引力研究中，“纠缠—几何”关系如此重要。</p><p>因此，“长度”并不一定只是一个被动的测量结果。</p><p>在更深的理论中：</p><blockquote><p><strong>长度本身可能是物理信息结构的一种表现。</strong></p></blockquote><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art3-4.webp"/><h2>16.月球、引力和神经微管：问题应该如何重新表述？</h2><p>于是我们又回到了一个看似完全不同的问题：</p><blockquote><p>月相变化造成的引力扰动，会不会影响神经微管中的量子效应？</p></blockquote><p>这里需要非常谨慎。</p><p>月球确实对地球产生引力。</p><p>而且月球在不同位置造成的并不只是一个简单的“力”，还存在<strong>潮汐梯度</strong>。</p><p>地表同一地点相对于月球的位置变化，会使月球引力的方向和大小发生周期性变化，海洋的潮汐效应便是由此而来。太阳月亮与地球的相对位置，也会造成类似的影响。</p><p>所以下面的命题成立。</p><blockquote><p>地表的引力场结构，随着月球围绕地球公转和地球自转所处的不同位置不同而改变。</p></blockquote><p>但这并不意味着：</p><blockquote><p>月球的潮汐引力足以显著改变神经微管中的量子态。</p></blockquote><p>因为在微观尺度上，还存在大量更强的因素：</p><ul><li>热噪声；</li><li>分子碰撞；</li><li>电磁相互作用；</li><li>化学环境；</li><li>神经活动。</li></ul><p>因此，“月球引力直接驱动微管量子意识”目前没有可靠证据支撑。同样的，这也不代表对该命题的否认。</p><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art3-5.webp"/><h2>17.一个非常重要的修正：量子系统不仅对“力”敏感</h2><p>这是值得保留的思想。</p><p>量子系统不仅可以受到力的影响，也可以对：</p><ul><li>势能；</li><li>相位；</li><li>边界条件；</li><li>几何结构；</li><li>时间尺度；</li><li>环境耦合</li></ul><p>产生响应。</p><p>例如量子干涉实验可以对极微小的：</p><ul><li>位移；</li><li>加速度；</li><li>引力势差</li></ul><p>产生响应。</p><p>广义相对论又告诉我们：</p><blockquote><p>引力不仅可以理解为一种“力”，还可以理解为时空几何。</p></blockquote><p>因此，从理论上讲：</p><blockquote><p>如果空间几何发生变化，量子态原则上可能受到影响。</p></blockquote><p>但“原则上可能”与“在大脑里足够大”是两回事。</p><p>这是科学推理中非常重要的尺度意识。</p><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art3-6.webp"/><h2>18.真正值得研究的可能不是“月球拉动微管”，而是“弱信号如何被复杂系统放大”</h2><p>这里出现了一个比月球引力本身更有趣的问题。</p><p>复杂系统有一种非常奇妙的性质：</p><blockquote><p><strong>一个很弱的输入，有时可以引起非常大的输出。</strong></p></blockquote><p>例如：</p><ul><li>共振；</li><li>同步；</li><li>临界现象；</li><li>正反馈；</li><li>非线性动力学。</li></ul><p>一颗小石头本身没有巨大的能量。</p><p>但如果山坡已经处于临界状态，它可能触发雪崩。</p><p>同理：</p><p>如果一个生物系统本身处于某种高度敏感的动态状态，那么一个微弱周期信号是否可能成为“触发器”？</p><p>这是一个比：</p><blockquote><p>“月球引力是不是足够大？”</p></blockquote><p>更值得研究的问题。</p><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art3-7.webp"/><h2>19.从这里重新理解“肉眼所见皆为虚”</h2><p>现在回到最开始那句话。</p><p>“虚”并不是：</p><blockquote><p>世界不存在。</p></blockquote><p>而更接近：</p><blockquote><p><strong>我们所执着的“世界”，只是现实经过感官、神经系统、认知结构之后形成的一种呈现。</strong></p></blockquote><p>这与现代科学有一个非常有趣的对应：</p><p>外界：物理过程</p><p class="arrow">↓</p><p>感官：信息采样</p><p class="arrow">↓</p><p>神经系统：预测、压缩、整合</p><p class="arrow">↓</p><p>意识：世界模型</p><p>因此：</p><blockquote><p><strong>我们经验中的世界，是一个被神经系统实时渲染出来的世界。</strong></p></blockquote><p>这并不意味着它是假的。</p><p>恰恰相反：</p><p>它是生命为了生存而建立的、极其有效的现实模型。</p><p class="note">（未完待续）</p>
+        </div>
+      </section>
+
+      <section class="part" id="part4">
+        <header class="part-head">
+          <div class="part-index">
+            <span class="part-no">04</span>
+            <span class="part-label">第 4 篇</span>
+          </div>
+          <h1 class="part-title" data-short="世界开始的地方">从“肉眼所见皆为虚”到宇宙的信息边界（四）：世界开始的地方</h1>
+          <div class="part-sub">
+            <span>2,040 字 · 6 图</span>
+            <a href="https://mp.weixin.qq.com/s/_Choln-kIT1XorI9Sq-V8w" target="_blank" rel="noopener">微信公众号原文 ↗</a>
+          </div>
+        </header>
+        <div class="body">
+<p class="note">（接上文）</p><img alt="" class="pic" decoding="async" loading="lazy" src="images/art4-1.webp"/><h2>20.不同生命看到不同世界，那么“真正的世界”是什么？</h2><p>这是哲学真正开始介入的地方。</p><p>如果：</p><ul><li>人类看到的七彩世界；</li><li>蜜蜂看到的要加上紫外线；</li><li>蝙蝠还可以通过回声感知空间；</li><li>蛇能够额外感知到红外世界；</li><li>其他某些动物能够感知到电磁场的世界；</li></ul><p>那么：</p><p>哪个才是真实的世界？</p><p>答案可能是：</p><blockquote><p><strong>它们都是同一个世界的不同投影。</strong></p></blockquote><p>没有任何一个生命系统能够把整个宇宙直接装进自己的感官。</p><p>每一种生物都拥有一套有限的接口。</p><p>因此：</p><blockquote><p><strong>感知不是世界的镜子，而是生命与世界之间的界面。</strong></p></blockquote><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art4-2.webp"/><h2>21.为什么“全息”这个比喻如此诱人</h2><p>全息图有一个很漂亮的特性：</p><p>整体图像的信息并不是简单地储存在某一个像素里。</p><p>它被分布在整个结构的关系中。</p><p>大脑中的记忆也不是简单地：</p><blockquote><p>“一个神经元 = 一段记忆。”</p></blockquote><p>很多认知内容依赖大规模神经网络的关系。</p><p>所以我们可以看到一种形式上的相似：</p><blockquote><p>局部--&gt;整体</p><p>边界--&gt;内部</p><p>感官输入--&gt;世界模型</p></blockquote><p>但再次强调：</p><blockquote><p><strong>形式相似并不等于物理同一。</strong></p></blockquote><p>这是整个问题需要保持清醒的地方。</p><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art4-3.webp"/><h2>22.一个更大胆的统一图景</h2><p>如果把我们一路讨论的思想全部放在一起，可以构造出一个非常大胆的哲学模型：</p><p>信息--&gt;关系--&gt;结构--&gt;世界--&gt;生命--&gt;感知--&gt;世界模型</p><p>在宇宙尺度：</p><blockquote><p>量子信息之间的关系可能与空间结构、几何乃至引力存在深刻联系。</p></blockquote><p>在生命尺度：</p><blockquote><p>感官信息经过神经系统的预测、压缩和整合，形成一个可供生命行动的世界模型。</p></blockquote><p>于是生命就像是在宇宙内部建立了一个局部的“世界重建器”。</p><p>但这并不意味着生命创造了新的宇宙。</p><p>而是：</p><blockquote><p><strong>宇宙中的一部分物质，通过复杂的信息组织，获得了对宇宙其他部分的内部表征。</strong></p></blockquote><p>这已经足够令人神往。</p><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art4-4.webp"/><h2>23.“宇宙通过生命认识自己”意味着什么？</h2><p>这句话经常被说得很诗意，但它其实可以有一个非常朴素的理解。</p><p>宇宙早期没有：</p><ul><li>眼睛；</li><li>耳朵；</li><li>神经系统；</li><li>意识。</li></ul><p>后来经过漫长的物理和生物演化：</p><ul><li><p>物质形成恒星；</p></li><li><p>恒星形成重元素；</p></li><li><p>行星形成复杂化学环境；</p></li><li><p>化学系统出现自组织；</p></li><li><p>生命出现；</p></li><li><p>神经系统出现；</p></li></ul><ul><li><p>意识出现。</p></li></ul><p>于是：</p><blockquote><p><strong>宇宙中的某些物质开始建立关于宇宙的内部模型。</strong></p></blockquote><p>一个人抬头看星空。</p><p>从物理角度：</p><blockquote><p>是宇宙中的物质在观察宇宙中的其他物质。</p></blockquote><p>从意识角度：</p><blockquote><p>是宇宙的一部分开始形成关于整个宇宙的表征。</p></blockquote><p>这句话没有必要被理解成神秘主义。它可以只是一个极其优美的自然主义事实。</p><p>所以，生物的大脑天然是一个<strong>世界模型</strong>。</p><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art4-5.webp"/><h2>24.宇宙是否真的有意识？</h2><p>从这里不能直接得出结论：</p><blockquote><p>宇宙本身具有一个统一的意识。</p></blockquote><p>这是另一个完全不同的假设。</p><p>它至少需要先回答：</p><ul><li>什么叫意识？</li><li>它的载体是什么？</li><li>信息如何整合？</li><li>如何产生统一体验？</li><li>是否存在可观测预测？</li><li>如何区别于“宇宙中存在很多意识”？</li></ul><p>有了这些答案，我们才能更清晰地增进对宇宙的了解。而我们目前，连第一个问题的答案是什么都没有搞清楚。</p><hr/><p>我们一路讨论下来，其实可以形成四层结构。</p><h3>第一层：物理世界</h3><p>有：</p><ul><li>粒子；</li><li>场；</li><li>能量；</li><li>时空；</li><li>量子态。</li></ul><hr/><h3>第二层：信息结构</h3><p>物理系统之间存在：</p><ul><li>关联；</li><li>纠缠；</li><li>因果关系；</li><li>边界条件；</li><li>信息约束。</li></ul><p>在某些量子引力理论中，空间和几何甚至可能与这些关系存在深层联系。</p><hr/><h3>第三层：生命系统</h3><p>生命利用：</p><ul><li>感官；</li><li>神经网络；</li><li>身体；</li><li>记忆；</li><li>预测模型</li></ul><p>从环境中提取与自身生存有关的信息。</p><hr/><h3>第四层：意识</h3><p>最终出现：</p><blockquote><p>“这里有一个世界，而且我正在这个世界里。”</p></blockquote><p>于是最令人惊讶的事情发生了：</p><p><strong>世界中的一个局部系统，开始拥有一个关于整个世界的内部模型。</strong></p><hr/><img alt="" class="pic" decoding="async" loading="lazy" src="images/art4-6.webp"/><h2>25.结语：我们看到的世界，究竟是谁“生成”的？</h2><p>现在再回头看：</p><blockquote><p>“肉眼所见皆为虚。”</p></blockquote><p>这句话就有了完全不同的含义。</p><p>它不是叫我们闭上眼睛否认世界。</p><p>而是在提醒：</p><blockquote><p><strong>不要把自己的世界模型误认为世界本身。</strong></p></blockquote><p>我们看到的是光经过感官系统之后形成的世界。蝙蝠听到的是声波构成的世界。蜜蜂看到的是包含紫外信息的世界。</p><p>大脑则把这些有限信息与过去的经验、预测和身体状态结合起来，形成一个连续的现实体验。</p><p>而现代物理又在另一端提出了更加惊人的问题：</p><blockquote><p>如果空间本身也可能是更底层量子信息关系的涌现，那么我们所谓的“世界”是不是同样不是最底层的东西？</p></blockquote><p>于是两条看似毫无关系的道路开始出现某种遥远的呼应：</p><p>量子信息--&gt;物理结构</p><p>以及：</p><p>感官信息--&gt;意识中的世界</p><p>前者可能是在问：</p><blockquote><p><strong>宇宙如何从信息形成空间？</strong></p></blockquote><p>后者则是在问：</p><blockquote><p><strong>生命如何从信息形成世界？</strong></p></blockquote><p>目前我们没有理由断言二者是同一个机制。</p><p>但也许它们共同指向了一个更加普遍的问题：</p><blockquote><p><strong>现实究竟是由“东西”组成的，还是由“关系”组成的？</strong></p></blockquote><p>如果未来证明空间可以从量子信息关系中涌现，那么我们对“物质”的理解会完全不同。</p><p>如果未来进一步理解意识如何从神经系统的信息关系中涌现，那么我们对“观察者”的理解也会发生颠覆性变化。</p><p>而如果有一天，这两件事情能够被放进同一个数学框架，那么我们可能终于能够回答一个古老得不能再古老的问题：</p><blockquote><p><strong>为什么这个宇宙不仅存在，而且能够在自己的内部产生能够认识它的存在？</strong></p></blockquote><p>也许那时候，“肉眼所见皆为虚”就不再是一句让人逃离现实的话。</p><p>它反而会成为一句提醒：</p><blockquote><p><strong>你眼前的世界是真的，但它只是现实的一种呈现。</strong></p><p><strong>真正值得探索的，不只是“我看见了什么”，而是：究竟是什么信息结构，使“看见”这件事情成为可能。</strong></p></blockquote>
+        </div>
+      </section>
+    </article>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="foot-inner">
+    <p class="mark">树 · 树的胡言乱语</p>
+    <p class="foot-note">本文全部内容来自微信公众号「树的胡言乱语」连载文章，此处仅为阅读排版整理，正文未作增删。</p>
+    <div class="foot-links">
+      <a href="https://mp.weixin.qq.com/s/_CBApJtvwpD4adqIwnJldA" target="_blank" rel="noopener">原文（一）</a>
+      <a href="https://mp.weixin.qq.com/s/4fTbkRnGkv1ze7jDuhVN5w" target="_blank" rel="noopener">原文（二）</a>
+      <a href="https://mp.weixin.qq.com/s/GRh70HAAh3fhF4E8Co3uXg" target="_blank" rel="noopener">原文（三）</a>
+      <a href="https://mp.weixin.qq.com/s/_Choln-kIT1XorI9Sq-V8w" target="_blank" rel="noopener">原文（四）</a>
+    </div>
+    <p class="foot-note">离线合辑 · 图片已本地保存</p>
+  </div>
+</footer>
+
+<div id="lightbox"><img src="" alt=""><div class="hint">点击任意处或按 ESC 关闭</div></div>
+<button id="toTop" title="回到顶部">↑</button>
+
+<script>
+(function(){
+  var body = document.body;
+  // 记忆偏好
+  try{
+    var t = localStorage.getItem('wx-theme'); if(t) document.documentElement.setAttribute('data-theme', t);
+    var f = localStorage.getItem('wx-font'); if(f) body.setAttribute('data-font', f);
+    var s = localStorage.getItem('wx-size'); if(s) document.documentElement.style.setProperty('--fs', s+'px');
+  }catch(e){}
+
+  /* ---- 目录 ---- */
+  var article = document.querySelector('article');
+  var nav = document.getElementById('tocNav');
+  var nodes = article.querySelectorAll('.part-title, .body h2, .body h3');
+  var partNo = 0;
+  nodes.forEach(function(n, i){
+    if(!n.id) n.id = 'sec' + i;
+    var a = document.createElement('a');
+    a.href = '#' + n.id;
+    if(n.classList.contains('part-title')){
+      partNo += 1;
+      a.textContent = ('0' + partNo).slice(-2) + ' · ' + (n.dataset.short || n.textContent.trim());
+      a.className = 'lv1';
+    }else{
+      a.textContent = n.textContent.trim();
+      a.className = n.tagName === 'H2' ? 'lv2' : 'lv3';
+    }
+    a.dataset.target = n.id;
+    nav.appendChild(a);
+  });
+  var links = Array.prototype.slice.call(nav.children);
+  var targets = links.map(function(a){ return document.getElementById(a.dataset.target); });
+
+  var toc = document.querySelector('.toc');
+  nav.addEventListener('click', function(e){
+    if(e.target.tagName === 'A' && window.innerWidth <= 980) toc.classList.remove('open');
+  });
+
+  /* ---- 滚动：进度 + 当前章节 ---- */
+  var bar = document.getElementById('progress');
+  var toTop = document.getElementById('toTop');
+  var topbar = document.querySelector('.topbar');
+  var hero = document.querySelector('.hero');
+  var ticking = false;
+  function onScroll(){
+    var h = document.documentElement;
+    var total = h.scrollHeight - h.clientHeight;
+    var y = h.scrollTop || body.scrollTop;
+    bar.style.width = (total > 0 ? (y / total) * 100 : 0) + '%';
+    toTop.classList.toggle('show', y > 600);
+    topbar.classList.toggle('solid', y > hero.offsetHeight - 70);
+
+    var cur = -1;
+    for(var i = 0; i < targets.length; i++){
+      if(targets[i] && targets[i].getBoundingClientRect().top <= 140) cur = i;
+    }
+    links.forEach(function(a, i){ a.classList.toggle('active', i === cur); });
+    if(cur >= 0){
+      var a = links[cur], nr = nav.getBoundingClientRect(), ar = a.getBoundingClientRect();
+      if(ar.top < nr.top + 8 || ar.bottom > nr.bottom - 8){
+        var t = document.querySelector('.toc');
+        t.scrollTop += (ar.top - nr.top) - 100;
+      }
+    }
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if(!ticking){ ticking = true; requestAnimationFrame(onScroll); }
+  }, {passive:true});
+  onScroll();
+
+  /* ---- 灯箱 ---- */
+  var lb = document.getElementById('lightbox');
+  var lbImg = lb.querySelector('img');
+  article.addEventListener('click', function(e){
+    if(e.target.classList.contains('pic')){
+      lbImg.src = e.target.src; lb.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+  });
+  function closeLb(){ lb.classList.remove('show'); document.body.style.overflow = ''; }
+  lb.addEventListener('click', closeLb);
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLb(); });
+
+  /* ---- 工具按钮 ---- */
+  var themeBtn = document.getElementById('themeBtn');
+  var fontBtn = document.getElementById('fontBtn');
+  var sizeBtn = document.getElementById('sizeBtn');
+  var menuBtn = document.getElementById('menuBtn');
+
+  themeBtn.addEventListener('click', function(){
+    var cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', cur);
+    themeBtn.textContent = cur === 'dark' ? '白天' : '夜间';
+    try{ localStorage.setItem('wx-theme', cur); }catch(e){}
+  });
+  if(document.documentElement.getAttribute('data-theme') === 'dark') themeBtn.textContent = '白天';
+
+  fontBtn.addEventListener('click', function(){
+    var cur = body.getAttribute('data-font') === 'serif' ? 'sans' : 'serif';
+    body.setAttribute('data-font', cur);
+    fontBtn.textContent = cur === 'serif' ? '衬线' : '黑体';
+    try{ localStorage.setItem('wx-font', cur); }catch(e){}
+  });
+  if(body.getAttribute('data-font') === 'serif') fontBtn.textContent = '衬线';
+
+  var sizes = [17, 19, 21], si = 1;
+  var curSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--fs'), 10);
+  if(curSize){ si = sizes.indexOf(curSize) < 0 ? 1 : sizes.indexOf(curSize); }
+  sizeBtn.addEventListener('click', function(){
+    si = (si + 1) % sizes.length;
+    document.documentElement.style.setProperty('--fs', sizes[si] + 'px');
+    try{ localStorage.setItem('wx-size', sizes[si]); }catch(e){}
+  });
+
+  menuBtn.addEventListener('click', function(){ toc.classList.toggle('open'); });
+
+  toTop.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+})();
+</script>
+</body>
+</html>
