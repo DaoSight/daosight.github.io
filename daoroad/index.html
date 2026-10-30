@@ -43,13 +43,13 @@ main{padding:0 0 72px}.intro{display:grid;grid-template-columns:1.15fr .85fr;gap
 </header>
 <main class="wrap">
 <section class="intro" aria-label="栏目介绍">
-<div class="panel"><h2>让古老修行体系与现代科学相遇</h2><p>“修行探索”只是无聊的人类发出的一声呐喊。也许是最后的。。。</p></div>
-<aside class="panel quote"><blockquote>“机器不可悟道，修行还需真人”</blockquote><small>此真人非是彼真人，希望未来的世界还有真人。有朝一日机器也学会悟道的话，是不是也会成为真人？</small></aside>
+<div class="panel"><h2>让古老修行体系与现代科学相遇</h2><p>“修行探索”只是无聊的人类发出的一声呐喊。希望不是最后的。。。</p></div>
+<aside class="panel quote"><blockquote>“机器不可悟道，修行还需真人”</blockquote><small>此真人非彼真人，敢问世间真有真人？</small></aside>
 </section>
 <section aria-labelledby="articles-title">
-<div class="section-head"><div><h2 id="articles-title">文章阅读</h2><p>本栏目中的 HTML 文章会自动列在这里。</p></div></div>
+<div class="section-head"><div><h2 id="articles-title">文章阅读</h2><p>本栏目中的 HTML 与 Markdown 文章会自动列在这里。</p></div></div>
 <div id="article-list" aria-live="polite"><div class="status">正在读取栏目文章……</div></div>
-<p class="note">文章列表通过 GitHub 目录接口读取。新增 HTML 文章并提交到本栏目后，刷新页面即可显示。</p>
+<p class="note">文章列表通过 GitHub 目录接口读取 <code>daoroad/</code> 目录。新增 HTML 或 Markdown 文章并提交到本栏目后，刷新页面即可显示。</p>
 </section>
 </main>
 <footer><div class="wrap footer-inner"><span>© DaoSight · 思想与世界的探索</span><a href="../index.html">返回 DaoSight 首页 ↑</a></div></footer>
@@ -62,17 +62,18 @@ const response=await fetch(api,{headers:{"Accept":"application/vnd.github+json"}
 if(!response.ok)throw new Error("无法读取文章目录");
 const files=await response.json();
 const articles=files.filter(file=>file.type==="file"&&/\.(html?|md)$/i.test(file.name)&&file.name.toLowerCase()!=="index.html").sort((a,b)=>a.name.localeCompare(b.name,"zh-CN"));
-if(!articles.length){list.innerHTML='<div class="status">暂时没有发现其他 HTML或MD 文章。请将文章提交到 <code>daoroad/</code> 目录。</div>';return;}
+if(!articles.length){list.innerHTML='<div class="status">暂时没有发现其他文章。请将文章提交到 <code>daoroad/</code> 目录。</div>';return;}
 list.replaceChildren();
+const repo="https://github.com/DaoSight/daosight.github.io";
 for(const file of articles){
 const isMd=/\.md$/i.test(file.name);
-const link=document.createElement("a");link.className="article";link.href="./"+encodeURIComponent(file.name);
+const link=document.createElement("a");link.className="article";
 link.href=isMd?repo+"/blob/main/daoroad/"+encodeURIComponent(file.name):"./"+encodeURIComponent(file.name);
 if(isMd){link.target="_blank";link.rel="noopener noreferrer";}
-const tag=document.createElement("span");tag.className="tag";tag.textContent="量子心解";
-const heading=document.createElement("h3");heading.textContent=file.name.replace(/\.html?$/i,"").replace(/[-_]/g," ");
+const tag=document.createElement("span");tag.className="tag";tag.textContent=isMd?"修行探索 · Markdown":"修行探索";
+const heading=document.createElement("h3");heading.textContent=file.name.replace(/\.(html?|md)$/i,"").replace(/[-_]/g," ");
 const desc=document.createElement("p");desc.textContent="打开文章，继续探索本栏目关注的问题。";
-const read=document.createElement("span");read.className="read";read.textContent="阅读全文 →";
+const read=document.createElement("span");read.className="read";read.textContent=isMd?"在 GitHub 阅读全文 →":"阅读全文 →";
 link.append(tag,heading,desc,read);list.appendChild(link);
 }
 }catch(error){list.innerHTML='<div class="status">暂时无法自动读取文章列表。你仍可以在 GitHub 中查看栏目文件。<br><a href="https://github.com/DaoSight/daosight.github.io/tree/main/daoroad" target="_blank" rel="noopener noreferrer">在 GitHub 查看本栏目目录 →</a></div>';}
