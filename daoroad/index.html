@@ -64,16 +64,12 @@ const files=await response.json();
 const articles=files.filter(file=>file.type==="file"&&/\.(html?|md)$/i.test(file.name)&&file.name.toLowerCase()!=="index.html").sort((a,b)=>a.name.localeCompare(b.name,"zh-CN"));
 if(!articles.length){list.innerHTML='<div class="status">暂时没有发现其他文章。请将文章提交到 <code>daoroad/</code> 目录。</div>';return;}
 list.replaceChildren();
-const repo="https://github.com/DaoSight/daosight.github.io";
 for(const file of articles){
-const isMd=/\.md$/i.test(file.name);
-const link=document.createElement("a");link.className="article";
-link.href=isMd?repo+"/blob/main/daoroad/"+encodeURIComponent(file.name):"./"+encodeURIComponent(file.name);
-if(isMd){link.target="_blank";link.rel="noopener noreferrer";}
-const tag=document.createElement("span");tag.className="tag";tag.textContent=isMd?"修行探索 · Markdown":"修行探索";
+const link=document.createElement("a");link.className="article";link.href="./"+encodeURIComponent(file.name);
+const tag=document.createElement("span");tag.className="tag";tag.textContent=/\.md$/i.test(file.name)?"修行探索 · Markdown":"修行探索";
 const heading=document.createElement("h3");heading.textContent=file.name.replace(/\.(html?|md)$/i,"").replace(/[-_]/g," ");
 const desc=document.createElement("p");desc.textContent="打开文章，继续探索本栏目关注的问题。";
-const read=document.createElement("span");read.className="read";read.textContent=isMd?"在 GitHub 阅读全文 →":"阅读全文 →";
+const read=document.createElement("span");read.className="read";read.textContent="阅读全文 →";
 link.append(tag,heading,desc,read);list.appendChild(link);
 }
 }catch(error){list.innerHTML='<div class="status">暂时无法自动读取文章列表。你仍可以在 GitHub 中查看栏目文件。<br><a href="https://github.com/DaoSight/daosight.github.io/tree/main/daoroad" target="_blank" rel="noopener noreferrer">在 GitHub 查看本栏目目录 →</a></div>';}
