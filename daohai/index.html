@@ -1,58 +1,112 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>道海理论｜道海知识中枢</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8f4">
+  <meta name="description" content="道海理论：探索思想、科学与存在问题。">
+  <title>道海理论｜DaoSight</title>
   <style>
-    body {
-      max-width: 850px;
-      margin: 50px auto;
-      padding: 24px;
-      font-family: "Microsoft YaHei", sans-serif;
-      line-height: 2;
-      color: #283747;
-      background: #f7f8fa;
-    }
-    h1, h2 { color: #245b4a; }
-    a { color: #26735b; }
-    article {
-      background: white;
-      padding: 24px;
-      border-radius: 12px;
-    }
-    .back { margin-bottom: 24px; }
+    :root{--bg:#f6f8f4;--paper:rgba(255,255,255,.88);--ink:#24352f;--muted:#68776f;--green:#537a65;--green-dark:#345743;--line:#dce5dc;--gold:#b38a4a;--shadow:0 18px 50px rgba(38,63,48,.08)}
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;color:var(--ink);background:radial-gradient(ellipse at 12% 0%,rgba(190,213,190,.34),transparent 38rem),radial-gradient(ellipse at 100% 20%,rgba(227,215,184,.24),transparent 34rem),var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.8}
+    a{color:inherit} .wrap{width:min(1060px,calc(100% - 36px));margin:0 auto}
+    header{padding:24px 0 0} .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+    .brand{text-decoration:none;font-weight:700;letter-spacing:.08em} .brand span{color:var(--green)}
+    .back{color:var(--muted);font-size:.92rem;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:7px 14px;background:rgba(255,255,255,.55)}
+    .back:hover{color:var(--green-dark);border-color:#a8c0ad}
+    .hero{padding:clamp(56px,9vw,100px) 0 52px;text-align:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;color:var(--green-dark);font-size:.82rem;letter-spacing:.16em;text-transform:uppercase}
+    .eyebrow:before,.eyebrow:after{content:"";display:block;width:25px;height:1px;background:var(--gold)}
+    h1{margin:16px 0 10px;font-family:"Songti SC","STSong","SimSun",serif;font-size:clamp(2.5rem,7vw,4.6rem);font-weight:500;letter-spacing:.08em;line-height:1.2}
+    .subtitle{margin:0 auto;max-width:700px;color:var(--muted);font-size:clamp(1rem,2.2vw,1.16rem)}
+    .ornament{margin:26px auto 0;color:var(--gold);letter-spacing:.5em}
+    main{padding:0 0 72px} .intro{display:grid;grid-template-columns:1.15fr .85fr;gap:26px;align-items:stretch;margin-bottom:26px}
+    .panel{border:1px solid var(--line);border-radius:22px;background:var(--paper);box-shadow:var(--shadow);padding:clamp(22px,4vw,34px)}
+    .panel h2{margin:0 0 12px;font-size:1.2rem;font-weight:650} .panel p{margin:0;color:var(--muted)}
+    .quote{display:flex;flex-direction:column;justify-content:center;background:linear-gradient(145deg,#eaf1e9,#f8f5eb)}
+    .quote blockquote{margin:0;font-family:"Songti SC","STSong","SimSun",serif;font-size:1.32rem;line-height:1.8;color:var(--green-dark)}
+    .quote small{display:block;margin-top:12px;color:var(--muted)}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin:42px 0 18px}
+    .section-head h2{margin:0;font-size:1.5rem;font-weight:650} .section-head p{margin:0;color:var(--muted);font-size:.92rem}
+    #article-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .article{display:flex;flex-direction:column;min-height:180px;padding:24px;border:1px solid var(--line);border-radius:18px;background:var(--paper);text-decoration:none;box-shadow:0 8px 26px rgba(38,63,48,.045);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+    .article:hover{transform:translateY(-3px);border-color:#adc4b0;box-shadow:var(--shadow)}
+    .article .tag{color:var(--green);font-size:.78rem;letter-spacing:.1em;margin-bottom:10px}
+    .article h3{margin:0 0 8px;font-size:1.12rem;line-height:1.55;overflow-wrap:anywhere}
+    .article p{margin:0;color:var(--muted);font-size:.93rem} .article .read{margin-top:auto;padding-top:18px;color:var(--green-dark);font-size:.9rem}
+    .status{grid-column:1/-1;padding:22px;border:1px dashed #cbd8cc;border-radius:16px;color:var(--muted);text-align:center}
+    .status a{color:var(--green-dark)} .note{margin-top:18px;color:var(--muted);font-size:.86rem}
+    footer{border-top:1px solid var(--line);padding:24px 0 34px;color:var(--muted);font-size:.88rem}
+    .footer-inner{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap} footer a{text-decoration:none} footer a:hover{color:var(--green-dark)}
+    @media(max-width:680px){.intro{grid-template-columns:1fr}#article-list{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column}.topbar{align-items:flex-start}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
   </style>
 </head>
 <body>
-  <p class="back"><a href="../index.html">← 返回知识中枢首页</a></p>
-
-  <article>
-    <h1>道海理论</h1>
-    <p>探索宇宙起源、时空演化与存在的本质。</p>
-
-    <h2>一、理论的出发点</h2>
-    <p>道海理论尝试从一个根本问题出发：宇宙所呈现的时空、物质与能量，是否可能来自某种更基础的存在状态？</p>
-
-    <h2>二、核心设想</h2>
-    <p>我们暂时把这一基础设想称为“道海”，并尝试用基态、激发态以及状态转变来描述宇宙的演化。</p>
-
-    <h2>三、与现代科学的关系</h2>
-    <p>道海目前是一种探索性的理论构想。它需要与广义相对论、量子理论和现代宇宙学进行比较，并明确区分已有科学证据与尚待验证的假说。</p>
-
-    
-<h2>四、文章目录</h2>
-<ul>
-  <li>
-    <a href="overview.html">道海理论综述——从不可言说的本源到可描述的宇宙</a>
-    <p>系统介绍道海理论的基本设想、宇宙演化思路及其证据边界。</p>
-  </li>
-  <li>道海的基态与激发态（后续整理）</li>
-  <li>道海与暗物质、暗能量（后续整理）</li>
-  <li>道海假说的证据边界（后续整理）</li>
-</ul>
-
-  </article>
+  <header class="wrap">
+    <nav class="topbar" aria-label="主导航">
+      <a class="brand" href="../index.html">DAO<span>SIGHT</span></a>
+      <a class="back" href="../index.html">← 返回首页</a>
+    </nav>
+    <section class="hero">
+      <div class="eyebrow">Daohai · A Cosmological Hypothesis</div>
+      <h1>道海理论</h1>
+      <p class="subtitle">从不可言说的本源到可描述的宇宙：以工作性假说探索时空、暗物质、暗能量与宇宙演化之间可能存在的联系。</p>
+      <div class="ornament" aria-hidden="true">✧ · ✧</div>
+    </section>
+  </header>
+  <main class="wrap">
+    <section class="intro" aria-label="栏目介绍">
+      <div class="panel">
+        <h2>让哲学直觉接受科学检验</h2>
+        <p>道海尝试把关于宇宙本源的哲学追问，转化为可以逐步讨论、建模并接受检验的研究问题。这里既关注宇宙学、时空与暗成分，也重视证据边界：哪些是现有科学的结论，哪些是理论推演，哪些仍只是开放的猜想。</p>
+      </div>
+      <aside class="panel quote">
+        <blockquote>“一个真正有价值的理论，必须能够失败。”</blockquote>
+        <small>在科学证据与哲学追问之间，保持开放，也保持审慎。</small>
+      </aside>
+    </section>
+    <section aria-labelledby="articles-title">
+      <div class="section-head">
+        <div><h2 id="articles-title">文章阅读</h2><p>本栏目中的 HTML 文章会自动列在这里。</p></div>
+      </div>
+      <div id="article-list" aria-live="polite"><div class="status">正在读取栏目文章……</div></div>
+      <p class="note">文章列表通过 GitHub 目录接口读取。新增 HTML 文章并提交到本栏目后，刷新页面即可显示。</p>
+    </section>
+  </main>
+  <footer><div class="wrap footer-inner"><span>© DaoSight · 思想与世界的探索</span><a href="../index.html">返回 DaoSight 首页 ↑</a></div></footer>
+  <script>
+    (async function () {
+      const list = document.getElementById("article-list");
+      const api = "https://api.github.com/repos/DaoSight/daosight.github.io/contents/daohai";
+      try {
+        const response = await fetch(api, {headers: {"Accept": "application/vnd.github+json"}});
+        if (!response.ok) throw new Error("无法读取文章目录");
+        const files = await response.json();
+        const articles = files
+          .filter(file => file.type === "file" && /\.html?$/i.test(file.name) && file.name.toLowerCase() !== "index.html")
+          .sort((a, b) => a.name.localeCompare(b.name, "zh-CN"));
+        if (!articles.length) {
+          list.innerHTML = '<div class="status">暂时没有发现其他 HTML 文章。请确认文章已提交到 <code>daohai/</code> 目录。</div>';
+          return;
+        }
+        list.replaceChildren();
+        for (const file of articles) {
+          const link = document.createElement("a");
+          link.className = "article";
+          link.href = "./" + encodeURIComponent(file.name);
+          const tag = document.createElement("span"); tag.className = "tag"; tag.textContent = "道海理论";
+          const heading = document.createElement("h3");
+          heading.textContent = file.name.replace(/\.html?$/i, "").replace(/[-_]/g, " ");
+          const desc = document.createElement("p"); desc.textContent = "打开文章，继续探索本栏目关注的问题。";
+          const read = document.createElement("span"); read.className = "read"; read.textContent = "阅读全文 →";
+          link.append(tag, heading, desc, read); list.appendChild(link);
+        }
+      } catch (error) {
+        list.innerHTML = '<div class="status">暂时无法自动读取文章列表。你仍可以在 GitHub 中查看栏目文件。<br><a href="https://github.com/DaoSight/daosight.github.io/tree/main/daohai" target="_blank" rel="noopener noreferrer">在 GitHub 查看本栏目目录 →</a></div>';
+      }
+    })();
+  </script>
 </body>
 </html>
