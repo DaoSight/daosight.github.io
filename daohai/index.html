@@ -9,7 +9,7 @@
   <style>
     :root{--bg:#f6f8f4;--paper:rgba(255,255,255,.88);--ink:#24352f;--muted:#68776f;--green:#537a65;--green-dark:#345743;--line:#dce5dc;--gold:#b38a4a;--shadow:0 18px 50px rgba(38,63,48,.08)}
     *{box-sizing:border-box} html{scroll-behavior:smooth}
-    body{margin:0;color:var(--ink);background:radial-gradient(ellipse at 12% 0%,rgba(190,213,190,.34),transparent 38rem),radial-gradient(ellipse at 100% 20%,rgba(227,215,184,.24),transparent 34rem),var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.8}
+    body{margin:0;color:var(--ink);background:radial-gradient(ellipse at 12% 0%,rgba(190,213,190,.34),transparent 38rem),radial-gradient(ellipse at 100% 20%,rgba(227,215,184,.24),transparent 34rem),var(--bg)}
     a{color:inherit} .wrap{width:min(1060px,calc(100% - 36px));margin:0 auto}
     header{padding:24px 0 0} .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:18px;border-bottom:1px solid var(--line)}
     .brand{text-decoration:none;font-weight:700;letter-spacing:.08em} .brand span{color:var(--green)}
@@ -30,7 +30,7 @@
     .section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin:42px 0 18px}
     .section-head h2{margin:0;font-size:1.5rem;font-weight:650} .section-head p{margin:0;color:var(--muted);font-size:.92rem}
     #article-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-    .article{display:flex;flex-direction:column;min-height:180px;padding:24px;border:1px solid var(--line);border-radius:18px;background:var(--paper);text-decoration:none;box-shadow:0 8px 26px rgba(38,63,48,.045);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+    .article{display:flex;flex-direction:column;min-height:180px;padding:24px;border:1px solid var(--line);border-radius:18px;background:var(--paper);text-decoration:none;box-shadow:0 8px 26px rgba(38,63,48,.06);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
     .article:hover{transform:translateY(-3px);border-color:#adc4b0;box-shadow:var(--shadow)}
     .article .tag{color:var(--green);font-size:.78rem;letter-spacing:.1em;margin-bottom:10px}
     .article h3{margin:0 0 8px;font-size:1.12rem;line-height:1.55;overflow-wrap:anywhere}
@@ -60,7 +60,7 @@
     <section class="intro" aria-label="栏目介绍">
       <div class="panel">
         <h2>让哲学直觉接受科学检验</h2>
-        <p>道海尝试把关于宇宙本源的哲学追问，转化为可以逐步讨论、建模并接受检验的研究问题。这里既关注宇宙学、时空与暗成分，也重视证据边界：哪些是现有科学的结论，哪些是理论推演，哪些仍只是开放的猜想。</p>
+        <p>道海尝试把关于宇宙本源的哲学追问，转化为可以逐步讨论、建模并接受检验的研究问题。这里既关注宇宙学、时空与暗成分，也重视证据边界与理论的可证伪性。</p>
       </div>
       <aside class="panel quote">
         <blockquote>“一个真正有价值的理论，必须能够失败。”</blockquote>
@@ -69,10 +69,10 @@
     </section>
     <section aria-labelledby="articles-title">
       <div class="section-head">
-        <div><h2 id="articles-title">文章阅读</h2><p>本栏目中的 HTML 文章会自动列在这里。</p></div>
+        <div><h2 id="articles-title">文章阅读</h2><p>本栏目中的 HTML 和 Markdown 文章会自动列在这里。</p></div>
       </div>
       <div id="article-list" aria-live="polite"><div class="status">正在读取栏目文章……</div></div>
-      <p class="note">文章列表通过 GitHub 目录接口读取。新增 HTML 文章并提交到本栏目后，刷新页面即可显示。</p>
+      <p class="note">文章列表通过 GitHub 目录接口读取。新增 HTML / Markdown 文章并提交到本栏目后，刷新页面即可显示。</p>
     </section>
   </main>
   <footer><div class="wrap footer-inner"><span>© DaoSight · 思想与世界的探索</span><a href="../index.html">返回 DaoSight 首页 ↑</a></div></footer>
@@ -80,31 +80,38 @@
     (async function () {
       const list = document.getElementById("article-list");
       const api = "https://api.github.com/repos/DaoSight/daosight.github.io/contents/daohai";
+      const githubBlobBase = "https://github.com/DaoSight/daosight.github.io/blob/main/daohai/";
       try {
         const response = await fetch(api, {headers: {"Accept": "application/vnd.github+json"}});
         if (!response.ok) throw new Error("无法读取文章目录");
         const files = await response.json();
         const articles = files
-          .filter(file => file.type === "file" && /\.html?$/i.test(file.name) && file.name.toLowerCase() !== "index.html")
+          .filter(file => {
+            if (file.type !== "file") return false;
+            const name = file.name.toLowerCase();
+            return (name !== "index.html") && (/\.html?$/i.test(name) || /\.md$/i.test(name) || /\.markdown$/i.test(name));
+          })
           .sort((a, b) => a.name.localeCompare(b.name, "zh-CN"));
         if (!articles.length) {
-          list.innerHTML = '<div class="status">暂时没有发现其他 HTML 文章。请确认文章已提交到 <code>daohai/</code> 目录。</div>';
+          list.innerHTML = '<div class="status">暂时没有发现其他 HTML / Markdown 文章。请确认文章已提交到 <code>daohai/</code> 目录。</div>';
           return;
         }
         list.replaceChildren();
         for (const file of articles) {
           const link = document.createElement("a");
           link.className = "article";
-          link.href = "./" + encodeURIComponent(file.name);
+          const lowerName = file.name.toLowerCase();
+          const isMarkdown = /\.md$|\.markdown$/i.test(lowerName);
+          link.href = isMarkdown ? githubBlobBase + encodeURIComponent(file.name) : "./" + encodeURIComponent(file.name);
           const tag = document.createElement("span"); tag.className = "tag"; tag.textContent = "道海理论";
           const heading = document.createElement("h3");
-          heading.textContent = file.name.replace(/\.html?$/i, "").replace(/[-_]/g, " ");
+          heading.textContent = file.name.replace(/\.(html?|md|markdown)$/i, "").replace(/[-_]/g, " ");
           const desc = document.createElement("p"); desc.textContent = "打开文章，继续探索本栏目关注的问题。";
-          const read = document.createElement("span"); read.className = "read"; read.textContent = "阅读全文 →";
+          const read = document.createElement("span"); read.className = "read"; read.textContent = isMarkdown ? "查看 Markdown →" : "阅读全文 →";
           link.append(tag, heading, desc, read); list.appendChild(link);
         }
       } catch (error) {
-        list.innerHTML = '<div class="status">暂时无法自动读取文章列表。你仍可以在 GitHub 中查看栏目文件。<br><a href="https://github.com/DaoSight/daosight.github.io/tree/main/daohai" target="_blank" rel="noopener noreferrer">在 GitHub 查看本栏目目录 →</a></div>';
+        list.innerHTML = '<div class="status">暂时无法自动读取文章列表。你仍可以在 GitHub 中查看栏目文件。<br><a href="https://github.com/DaoSight/daosight.github.io/tree/main/daohai">打开 daohai 目录</a></div>';
       }
     })();
   </script>
