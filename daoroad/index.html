@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f6f8f4">
+<meta name="description" content="修行探索｜DaoSight">
+<title>修行探索｜DaoSight</title>
+<style>
+:root{--bg:#f6f8f4;--paper:rgba(255,255,255,.9);--ink:#24352f;--muted:#68776f;--green:#537a65;--dark:#345743;--line:#dce5dc;--gold:#b38a4a;--shadow:0 18px 50px rgba(38,63,48,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);background:radial-gradient(ellipse at 12% 0%,rgba(190,213,190,.34),transparent 38rem),radial-gradient(ellipse at 100% 20%,rgba(227,215,184,.24),transparent 34rem),var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.8}
+a{color:inherit}.wrap{width:min(1060px,calc(100% - 36px));margin:0 auto}header{padding:24px 0 0}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.brand{text-decoration:none;font-weight:700;letter-spacing:.08em}.brand span{color:var(--green)}
+.back{color:var(--muted);font-size:.92rem;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:7px 14px;background:rgba(255,255,255,.55)}
+.back:hover{color:var(--dark);border-color:#a8c0ad}.hero{padding:clamp(56px,9vw,100px) 0 52px;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;color:var(--dark);font-size:.82rem;letter-spacing:.16em;text-transform:uppercase}
+.eyebrow:before,.eyebrow:after{content:"";display:block;width:25px;height:1px;background:var(--gold)}
+h1{margin:16px 0 10px;font-family:"Songti SC","STSong","SimSun",serif;font-size:clamp(2.5rem,7vw,4.6rem);font-weight:500;letter-spacing:.08em;line-height:1.2}
+.subtitle{margin:0 auto;max-width:720px;color:var(--muted);font-size:clamp(1rem,2.2vw,1.16rem)}.ornament{margin:26px auto 0;color:var(--gold);letter-spacing:.5em}
+main{padding:0 0 72px}.intro{display:grid;grid-template-columns:1.15fr .85fr;gap:26px;align-items:stretch;margin-bottom:26px}
+.panel{border:1px solid var(--line);border-radius:22px;background:var(--paper);box-shadow:var(--shadow);padding:clamp(22px,4vw,34px)}
+.panel h2{margin:0 0 12px;font-size:1.2rem;font-weight:650}.panel p{margin:0;color:var(--muted)}
+.quote{display:flex;flex-direction:column;justify-content:center;background:linear-gradient(145deg,#eaf1e9,#f8f5eb)}
+.quote blockquote{margin:0;font-family:"Songti SC","STSong","SimSun",serif;font-size:1.32rem;line-height:1.8;color:var(--dark)}.quote small{display:block;margin-top:12px;color:var(--muted)}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin:42px 0 18px}.section-head h2{margin:0;font-size:1.5rem;font-weight:650}.section-head p{margin:0;color:var(--muted);font-size:.92rem}
+#article-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.article{display:flex;flex-direction:column;min-height:180px;padding:24px;border:1px solid var(--line);border-radius:18px;background:var(--paper);text-decoration:none;box-shadow:0 8px 26px rgba(38,63,48,.045);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.article:hover{transform:translateY(-3px);border-color:#adc4b0;box-shadow:var(--shadow)}.tag{color:var(--green);font-size:.78rem;letter-spacing:.1em;margin-bottom:10px}
+.article h3{margin:0 0 8px;font-size:1.12rem;line-height:1.55;overflow-wrap:anywhere}.article p{margin:0;color:var(--muted);font-size:.93rem}.read{margin-top:auto;padding-top:18px;color:var(--dark);font-size:.9rem}
+.status{grid-column:1/-1;padding:22px;border:1px dashed #cbd8cc;border-radius:16px;color:var(--muted);text-align:center}.status a{color:var(--dark)}
+.note{margin-top:18px;color:var(--muted);font-size:.86rem}footer{border-top:1px solid var(--line);padding:24px 0 34px;color:var(--muted);font-size:.88rem}
+.footer-inner{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}footer a{text-decoration:none}footer a:hover{color:var(--dark)}
+@media(max-width:680px){.intro{grid-template-columns:1fr}#article-list{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column}.topbar{align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap">
+<nav class="topbar" aria-label="主导航"><a class="brand" href="../index.html">DAO<span>SIGHT</span></a><a class="back" href="../index.html">← 返回首页</a></nav>
+<section class="hero"><div class="eyebrow">Quantum Reflections</div><h1>修行探索</h1><p class="subtitle">以现代科学理论为入口，以古代修行典籍为纵深，探索意识修行的道路。</p><div class="ornament" aria-hidden="true">✧ · ✧</div></section>
+</header>
+<main class="wrap">
+<section class="intro" aria-label="栏目介绍">
+<div class="panel"><h2>让古老修行体系与现代科学相遇</h2><p>“修行探索”只是无聊的程序员发出的一声呐喊。也许是最后的。。。</p></div>
+<aside class="panel quote"><blockquote>“机器不可悟道，修行还需真人”</blockquote><small>此真人非是彼真人，又若彼真人。</small></aside>
+</section>
+<section aria-labelledby="articles-title">
+<div class="section-head"><div><h2 id="articles-title">文章阅读</h2><p>本栏目中的 HTML 文章会自动列在这里。</p></div></div>
+<div id="article-list" aria-live="polite"><div class="status">正在读取栏目文章……</div></div>
+<p class="note">文章列表通过 GitHub 目录接口读取。新增 HTML 文章并提交到本栏目后，刷新页面即可显示。</p>
+</section>
+</main>
+<footer><div class="wrap footer-inner"><span>© DaoSight · 思想与世界的探索</span><a href="../index.html">返回 DaoSight 首页 ↑</a></div></footer>
+<script>
+(async function(){
+const list=document.getElementById("article-list");
+const api="https://api.github.com/repos/DaoSight/daosight.github.io/contents/quantum";
+try{
+const response=await fetch(api,{headers:{"Accept":"application/vnd.github+json"}});
+if(!response.ok)throw new Error("无法读取文章目录");
+const files=await response.json();
+const articles=files.filter(file=>file.type==="file"&&/\.html?$/i.test(file.name)&&file.name.toLowerCase()!=="index.html").sort((a,b)=>a.name.localeCompare(b.name,"zh-CN"));
+if(!articles.length){list.innerHTML='<div class="status">暂时没有发现其他 HTML 文章。请将文章提交到 <code>quantum/</code> 目录。</div>';return;}
+list.replaceChildren();
+for(const file of articles){
+const link=document.createElement("a");link.className="article";link.href="./"+encodeURIComponent(file.name);
+const tag=document.createElement("span");tag.className="tag";tag.textContent="量子心解";
+const heading=document.createElement("h3");heading.textContent=file.name.replace(/\.html?$/i,"").replace(/[-_]/g," ");
+const desc=document.createElement("p");desc.textContent="打开文章，继续探索本栏目关注的问题。";
+const read=document.createElement("span");read.className="read";read.textContent="阅读全文 →";
+link.append(tag,heading,desc,read);list.appendChild(link);
+}
+}catch(error){list.innerHTML='<div class="status">暂时无法自动读取文章列表。你仍可以在 GitHub 中查看栏目文件。<br><a href="https://github.com/DaoSight/daosight.github.io/tree/main/quantum" target="_blank" rel="noopener noreferrer">在 GitHub 查看本栏目目录 →</a></div>';}
+})();
+</script>
+</body>
+</html>
