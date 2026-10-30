@@ -102,7 +102,8 @@
           link.className = "article";
           const lowerName = file.name.toLowerCase();
           const isMarkdown = /\.md$|\.markdown$/i.test(lowerName);
-          link.href = isMarkdown ? githubBlobBase + encodeURIComponent(file.name) : "./" + encodeURIComponent(file.name);
+          // link.href = isMarkdown ? githubBlobBase + encodeURIComponent(file.name) : "./" + encodeURIComponent(file.name);
+          link.href = "./" + encodeURIComponent(file.name);
           const tag = document.createElement("span"); tag.className = "tag"; tag.textContent = "道海理论";
           const heading = document.createElement("h3");
           heading.textContent = file.name.replace(/\.(html?|md|markdown)$/i, "").replace(/[-_]/g, " ");
