@@ -26,7 +26,7 @@ main{padding:0 0 72px}.intro{display:grid;grid-template-columns:1.15fr .85fr;gap
 .quote blockquote{margin:0;font-family:"Songti SC","STSong","SimSun",serif;font-size:1.32rem;line-height:1.8;color:var(--dark)}.quote small{display:block;margin-top:12px;color:var(--muted)}
 .section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin:42px 0 18px}.section-head h2{margin:0;font-size:1.5rem;font-weight:650}.section-head p{margin:0;color:var(--muted)}
 #article-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.article{display:flex;flex-direction:column;min-height:180px;padding:24px;border:1px solid var(--line);border-radius:18px;background:var(--paper);text-decoration:none;box-shadow:0 8px 26px rgba(38,63,48,.06);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.article{display:flex;flex-direction:column;min-height:180px;padding:24px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(248,250,246,.9));text-decoration:none;box-shadow:0 8px 26px rgba(38,63,48,.06);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
 .article:hover{transform:translateY(-3px);border-color:#adc4b0;box-shadow:var(--shadow)}.tag{color:var(--green);font-size:.78rem;letter-spacing:.1em;margin-bottom:10px}
 .article h3{margin:0 0 8px;font-size:1.12rem;line-height:1.55;overflow-wrap:anywhere}.article p{margin:0;color:var(--muted);font-size:.93rem}.read{margin-top:auto;padding-top:18px;color:var(--dark);font-weight:600}
 .status{grid-column:1/-1;padding:22px;border:1px dashed #cbd8cc;border-radius:16px;color:var(--muted);text-align:center}.status a{color:var(--dark)}
@@ -43,7 +43,7 @@ main{padding:0 0 72px}.intro{display:grid;grid-template-columns:1.15fr .85fr;gap
 </header>
 <main class="wrap">
 <section aria-labelledby="articles-title">
-<div class="section-head"><div><h2 id="articles-title">文章阅读</h2><p>本文为 Markdown 渲染页面，可直接阅读原文。</p></div></div>
+<div class="section-head"><div><h2 id="articles-title">文章阅读</h2><p>Markdown 文档会在专用阅读页渲染，兼顾可读性与浏览体验。</p></div></div>
 <div id="article-list" aria-live="polite"><div class="status">正在读取文章……</div></div>
 </section>
 </main>
@@ -60,14 +60,25 @@ try{
   if(!articles.length){list.innerHTML='<div class="status">暂时没有发现其他文章。请将文章提交到 <code>daoroad/</code> 目录。</div>';return;}
   list.replaceChildren();
   for(const file of articles){
-    const link=document.createElement("a");link.className="article";link.href=/\.md$/i.test(file.name)?"./reader.html?f=" + encodeURIComponent(file.name):"./" + encodeURIComponent(file.name);
-    const tag=document.createElement("span");tag.className="tag";tag.textContent=/\.md$/i.test(file.name)?"修行探索 · Markdown":"修行探索";
-    const heading=document.createElement("h3");heading.textContent=file.name.replace(/\.(html?|md)$/i,"").replace(/[-_]/g," ");
-    const desc=document.createElement("p");desc.textContent="打开文章，继续探索本栏目关注的问题。";
-    const read=document.createElement("span");read.className="read";read.textContent="阅读全文 →";
-    link.append(tag,heading,desc,read);list.appendChild(link);
+    const link=document.createElement("a");
+    link.className="article";
+    link.href=/\.md$/i.test(file.name)?"./reader.html?f=" + encodeURIComponent(file.name):"./" + encodeURIComponent(file.name);
+    const tag=document.createElement("span");
+    tag.className="tag";
+    tag.textContent=/\.md$/i.test(file.name)?"修行探索 · Markdown":"修行探索";
+    const heading=document.createElement("h3");
+    heading.textContent=file.name.replace(/\.(html?|md)$/i,"").replace(/[-_]/g," ");
+    const desc=document.createElement("p");
+    desc.textContent="打开文章，继续探索本栏目关注的问题。";
+    const read=document.createElement("span");
+    read.className="read";
+    read.textContent="阅读全文 →";
+    link.append(tag,heading,desc,read);
+    list.appendChild(link);
   }
-}catch(error){list.innerHTML='<div class="status">暂时无法自动读取文章列表。你仍可以在 GitHub 中查看栏目文件。<br><a href="https://github.com/DaoSight/daosight.github.io/tree/main/daoroad">查看 daoroad 目录</a></div>'}
+}catch(error){
+  list.innerHTML='<div class="status">暂时无法自动读取文章列表。你仍可以在 GitHub 中查看栏目文件。<br><a href="https://github.com/DaoSight/daosight.github.io/tree/main/daoroad">查看 daoroad 目录</a></div>';
+}
 })();
 </script>
 </body>
