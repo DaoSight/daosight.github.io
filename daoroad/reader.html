@@ -19,16 +19,7 @@
     .back{color:var(--muted);font-size:.92rem;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:7px 14px;background:rgba(255,255,255,.55)}
     .back:hover{color:var(--dark);border-color:#a8c0ad}
     main{padding:28px 0 72px}
-    .page-shell{display:flex;gap:26px;align-items:flex-start;max-width:1380px;margin:0 auto;padding:0 12px}
-    .toc-column{flex:0 0 260px;position:sticky;top:20px;align-self:flex-start}
-    .toc-panel{background:rgba(255,255,255,.6);border:1px solid var(--line);border-radius:20px;padding:16px 14px;box-shadow:0 14px 34px rgba(38,63,48,.04)}
-    .toc-panel h3{margin:0 0 12px;font-size:.82rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
-    .toc{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-    .toc li{margin:0;padding:0}
-    .toc a{display:block;padding:8px 10px;border-left:3px solid transparent;border-radius:10px;color:var(--dark);text-decoration:none;line-height:1.45;font-size:.92rem;background:rgba(83,122,101,.02)}
-    .toc a:hover{border-color:#adc4b0;background:rgba(83,122,101,.06)}
-    .toc .level-3{margin-left:12px}
-    .article-shell{flex:1;min-width:0;background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(249,250,247,.94));border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:clamp(22px,4vw,42px)}
+    .article-shell{width:min(100%, 980px);margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(249,250,247,.94));border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:clamp(22px,4vw,42px)}
     .meta{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 18px;color:var(--muted);font-size:.82rem;letter-spacing:.08em;text-transform:uppercase}
     .meta span{display:inline-flex;align-items:center;padding:.4rem .7rem;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.5)}
     .article-shell h1,.article-shell h2,.article-shell h3,.article-shell h4{color:var(--dark);line-height:1.35;margin-top:1.8em;margin-bottom:.7em}
@@ -56,7 +47,6 @@
     .status{padding:22px;border:1px dashed #cbd8cc;border-radius:16px;color:var(--muted);text-align:center;background:rgba(255,255,255,.55)}
     footer{border-top:1px solid var(--line);padding:24px 0 34px;color:var(--muted);font-size:.88rem}
     .footer-inner{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}footer a{text-decoration:none}footer a:hover{color:var(--dark)}
-    @media(max-width:980px){.page-shell{display:block}.toc-column{position:static;width:auto;margin:0 0 16px}.toc-panel{padding:12px 14px}.}
     @media(max-width:680px){.topbar{align-items:flex-start}.article-nav{flex-direction:column;align-items:stretch}.article-nav .nav-group{width:100%}.article-nav a{width:100%}}
   </style>
 </head>
@@ -68,19 +58,10 @@
     </nav>
   </header>
 
-  <main>
-    <div class="page-shell">
-      <aside class="toc-column">
-        <div id="toc-panel" class="toc-panel" aria-live="polite">
-          <h3>目录</h3>
-          <div class="status">正在生成目录……</div>
-        </div>
-      </aside>
-
-      <article id="reader" class="article-shell" aria-live="polite">
-        <div class="status">正在加载文章……</div>
-      </article>
-    </div>
+  <main class="wrap">
+    <article id="reader" class="article-shell" aria-live="polite">
+      <div class="status">正在加载文章……</div>
+    </article>
   </main>
 
   <footer>
@@ -94,7 +75,6 @@
   <script>
     (function () {
       const reader = document.getElementById('reader');
-      const tocPanel = document.getElementById('toc-panel');
 
       function toStringValue(value) {
         return String(value == null ? '' : value);
@@ -113,16 +93,9 @@
         return candidate.replace(/^\.\//, '').replace(/^\//, '');
       }
 
-      function sanitizePath(value) {
-        return value.split('/').map(function (segment) {
-          return encodeURIComponent(segment);
-        }).join('/');
-      }
-
-      function buildRawUrl(relativePath) {
-        const repoRoot = 'https://raw.githubusercontent.com/DaoSight/daosight.github.io/main/';
-        const repoRelative = relativePath.startsWith('daoroad/') ? relativePath : 'daoroad/' + relativePath;
-        return repoRoot + sanitizePath(repoRelative);
+      function makeRelativeFetchUrl(relativePath) {
+        const normalized = toStringValue(relativePath).replace(/^\.\//, '').replace(/^\//, '');
+        return './' + normalized;
       }
 
       function resolveMarkdownLink(target, basePath) {
@@ -143,24 +116,6 @@
           .replace(/[^\u4e00-\u9fa5a-z0-9\s-]/g, '')
           .trim();
         return text.replace(/\s+/g, '-');
-      }
-
-      function buildTocFromMarkdown(markdownText) {
-        const matches = toStringValue(markdownText).match(/^#{2,3}\s+(.*)$/gm) || [];
-        if (!matches.length) {
-          tocPanel.innerHTML = '<h3>目录</h3><div class="status">本篇暂无章节目录</div>';
-          return;
-        }
-
-        const items = matches.map(function (item) {
-          const levelMatch = item.match(/^(#+)/);
-          const level = levelMatch && levelMatch[1].length === 3 ? 'level-3' : 'level-2';
-          const label = item.replace(/^#+\s+/, '').trim();
-          const id = normalizeForAnchor(label || 'section');
-          return '<li class="' + level + '"><a href="#' + id + '">' + label + '</a></li>';
-        });
-
-        tocPanel.innerHTML = '<h3>目录</h3><ul class="toc">' + items.join('') + '</ul>';
       }
 
       function displayError(message) {
@@ -195,8 +150,8 @@
         return;
       }
 
-      const rawUrl = buildRawUrl(fileParam);
       const label = fileParam.split('/').pop().replace(/\.(md|markdown)$/i, '');
+      const fetchUrl = makeRelativeFetchUrl(fileParam.startsWith('daoroad/') ? fileParam.replace(/^daoroad\//, '') : fileParam);
 
       const renderer = new marked.Renderer();
       renderer.heading = function (text, level, raw) {
@@ -213,13 +168,13 @@
       };
       renderer.image = function (href, title, text) {
         const imageHref = toStringValue(href);
-        const source = /^https?:\/\//i.test(imageHref) ? imageHref : buildRawUrl(imageHref.startsWith('daoroad/') ? imageHref : ('daoroad/' + imageHref.replace(/^\.\//, '')));
+        const source = /^https?:\/\//i.test(imageHref) ? imageHref : new URL(imageHref.startsWith('/') ? imageHref : './' + imageHref.replace(/^\.\//, ''), window.location.href).href;
         const alt = toStringValue(text || '');
         const titleAttr = title ? ' title="' + toStringValue(title).replace(/"/g, '&quot;') + '"' : '';
         return '<img src="' + source + '" alt="' + alt + '"' + titleAttr + ' loading="lazy">';
       };
 
-      fetch(rawUrl)
+      fetch(fetchUrl)
         .then(function (response) {
           if (!response.ok) {
             throw new Error('无法获取文章内容。');
@@ -227,8 +182,6 @@
           return response.text();
         })
         .then(function (text) {
-          buildTocFromMarkdown(text);
-
           const html = marked.parse(text, {
             gfm: true,
             breaks: true,
