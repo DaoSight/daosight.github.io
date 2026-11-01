@@ -82,8 +82,12 @@
     (function () {
       const reader = document.getElementById('reader');
 
+      function toStringValue(value) {
+        return String(value == null ? '' : value);
+      }
+
       function sanitizeTitle(value) {
-        return value.replace(/[-_]/g, ' ').trim();
+        return toStringValue(value).replace(/[-_]/g, ' ').trim();
       }
 
       function resolveFileParam() {
@@ -110,15 +114,15 @@
       function resolveMarkdownLink(target, basePath) {
         if (!target || target.startsWith('#')) return target;
         if (/^https?:\/\//i.test(target) || /^mailto:/i.test(target) || /^data:/i.test(target)) return target;
-        const normalized = target.replace(/\\/g, '/');
-        const baseDir = basePath.split('/').slice(0, -1).join('/');
+        const normalized = toStringValue(target).replace(/\\/g, '/');
+        const baseDir = toStringValue(basePath).split('/').slice(0, -1).join('/');
         const candidate = normalized.startsWith('/') ? normalized.slice(1) : normalized;
         const cleaned = candidate.startsWith('daoroad/') ? candidate : (baseDir && baseDir !== 'daoroad' ? baseDir + '/' + candidate : 'daoroad/' + candidate);
         return './reader.html?f=' + encodeURIComponent(cleaned.replace(/^\.\//, ''));
       }
 
       function normalizeForAnchor(value) {
-        const text = value
+        const text = toStringValue(value)
           .toLowerCase()
           .replace(/<[^>]+>/g, '')
           .replace(/[“”‘’]/g, '')
@@ -127,15 +131,16 @@
         return text.replace(/\s+/g, '-');
       }
 
-      function buildTocFromReader() {
-        const headings = Array.from(reader.querySelectorAll('h2, h3'));
-        if (!headings.length) return '';
+      function buildTocFromMarkdown(markdownText) {
+        const matches = toStringValue(markdownText).match(/^#{2,3}\s+(.*)$/gm) || [];
+        if (!matches.length) return '';
 
-        const items = headings.map(function (heading) {
-          const level = heading.tagName.toLowerCase() === 'h3' ? 'level-3' : 'level-2';
-          const id = heading.id || normalizeForAnchor(heading.textContent || 'section');
-          heading.id = id;
-          return '<li class="' + level + '"><a href="#' + id + '">' + heading.textContent + '</a></li>';
+        const items = matches.map(function (item) {
+          const levelMatch = item.match(/^(#+)/);
+          const level = levelMatch && levelMatch[1].length === 3 ? 'level-3' : 'level-2';
+          const label = item.replace(/^#+\s+/, '').trim();
+          const id = normalizeForAnchor(label || 'section');
+          return '<li class="' + level + '"><a href="#' + id + '">' + label + '</a></li>';
         });
 
         return '<div class="toc-wrap"><h3>目录</h3><ul class="toc">' + items.join('') + '</ul></div>';
@@ -178,20 +183,21 @@
 
       const renderer = new marked.Renderer();
       renderer.heading = function (text, level, raw) {
-        const id = normalizeForAnchor(raw || text || 'section');
+        const rawText = toStringValue(raw || text || 'section');
+        const id = normalizeForAnchor(rawText);
         return '<h' + level + ' id="' + id + '">' + text + '</h' + level + '>';
       };
       renderer.link = function (href, title, text) {
-        const cleanHref = href || '';
+        const cleanHref = toStringValue(href || '');
         const target = cleanHref.startsWith('http') || cleanHref.startsWith('mailto:') || cleanHref.startsWith('data:') ? '_blank' : '_self';
         const resolvedHref = cleanHref.startsWith('http') || cleanHref.startsWith('mailto:') || cleanHref.startsWith('data:') ? cleanHref : resolveMarkdownLink(cleanHref, fileParam);
-        const attrTitle = title ? ' title="' + title.replace(/"/g, '&quot;') + '"' : '';
+        const attrTitle = title ? ' title="' + toStringValue(title).replace(/"/g, '&quot;') + '"' : '';
         return '<a href="' + resolvedHref + '" target="' + target + '" rel="noopener noreferrer"' + attrTitle + '>' + text + '</a>';
       };
       renderer.image = function (href, title, text) {
-        const source = /^https?:\/\//i.test(href) ? href : buildRawUrl(href.startsWith('daoroad/') ? href : ('daoroad/' + href.replace(/^\.\//, '')));
-        const alt = text || '';
-        const titleAttr = title ? ' title="' + title.replace(/"/g, '&quot;') + '"' : '';
+        const source = /^https?:\/\//i.test(toStringValue(href)) ? toStringValue(href) : buildRawUrl(toStringValue(href).startsWith('daoroad/') ? toStringValue(href) : ('daoroad/' + toStringValue(href).replace(/^\.\//, '')));
+        const alt = toStringValue(text || '');
+        const titleAttr = title ? ' title="' + toStringValue(title).replace(/"/g, '&quot;') + '"' : '';
         return '<img src="' + source + '" alt="' + alt + '"' + titleAttr + ' loading="lazy">';
       };
 
@@ -203,6 +209,7 @@
           return response.text();
         })
         .then(function (text) {
+          const toc = buildTocFromMarkdown(text);
           const html = marked.parse(text, {
             gfm: true,
             breaks: true,
@@ -213,7 +220,7 @@
           });
 
           const sourceHref = 'https://github.com/DaoSight/daosight.github.io/blob/main/' + (fileParam.startsWith('daoroad/') ? fileParam : 'daoroad/' + fileParam);
-          reader.innerHTML = '<div class="meta"><span>Markdown</span><span>' + fileParam.replace(/^daoroad\//, '') + '</span></div><h1>' + sanitizeTitle(label) + '</h1>' + buildTocFromReader() + html + '<a class="source-link" href="' + sourceHref + '" target="_blank" rel="noopener noreferrer">查看 GitHub 原文 ↗</a>';
+          reader.innerHTML = '<div class="meta"><span>Markdown</span><span>' + fileParam.replace(/^daoroad\//, '') + '</span></div><h1>' + sanitizeTitle(label) + '</h1>' + toc + html + '<a class="source-link" href="' + sourceHref + '" target="_blank" rel="noopener noreferrer">查看 GitHub 原文 ↗</a>';
           document.title = sanitizeTitle(label) + '｜DaoSight';
 
           return loadArticleList();
