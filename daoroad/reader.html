@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8f4">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.jsdelivr.net https://raw.githubusercontent.com https://api.github.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; connect-src 'self' https://raw.githubusercontent.com https://api.github.com; font-src 'self' data: https://cdn.jsdelivr.net;">
+  <title>文章阅读｜DaoSight</title>
+  <style>
+    :root{--bg:#f6f8f4;--paper:rgba(255,255,255,.9);--ink:#24352f;--muted:#68776f;--green:#537a65;--dark:#345743;--line:#dce5dc;--gold:#b38a4a;--shadow:0 18px 50px rgba(38,63,48,.08)}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;color:var(--ink);background:radial-gradient(ellipse at 12% 0%,rgba(190,213,190,.34),transparent 38rem),radial-gradient(ellipse at 100% 20%,rgba(227,215,184,.24),transparent 34rem),var(--bg)}
+    a{color:inherit}
+    .wrap{width:min(1060px,calc(100% - 36px));margin:0 auto}
+    header{padding:24px 0 0}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+    .brand{text-decoration:none;font-weight:700;letter-spacing:.08em}.brand span{color:var(--green)}
+    .back{color:var(--muted);font-size:.92rem;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:7px 14px;background:rgba(255,255,255,.55)}
+    .back:hover{color:var(--dark);border-color:#a8c0ad}
+    main{padding:28px 0 72px}
+    .article-shell{background:var(--paper);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:clamp(22px,4vw,40px)}
+    .article-shell h1,.article-shell h2,.article-shell h3,.article-shell h4{color:var(--dark);line-height:1.35;margin-top:1.7em;margin-bottom:.7em}
+    .article-shell h1{font-size:clamp(2rem,5vw,3rem);margin-top:0;border-bottom:1px solid var(--line);padding-bottom:12px}
+    .article-shell h2{font-size:clamp(1.5rem,3vw,2rem)}
+    .article-shell h3{font-size:1.2rem}
+    .article-shell p,.article-shell li,.article-shell blockquote,.article-shell td,.article-shell th{color:var(--ink);line-height:1.9;font-size:1.02rem}
+    .article-shell p{margin:1em 0}
+    .article-shell ul,.article-shell ol{padding-left:1.5em}
+    .article-shell blockquote{margin:1.5em 0;padding:0.8em 1.1em;border-left:4px solid var(--gold);background:rgba(179,138,74,.08);border-radius:0 12px 12px 0;color:var(--dark)}
+    .article-shell pre{overflow:auto;background:#f3f6f1;padding:1em;border:1px solid var(--line);border-radius:14px;line-height:1.7}
+    .article-shell code{font-family:Consolas,"Liberation Mono",Menlo,monospace;background:rgba(83,122,101,.08);padding:.15em .35em;border-radius:6px}
+    .article-shell pre code{background:transparent;padding:0}
+    .article-shell a{color:var(--green);text-decoration:underline;text-underline-offset:2px}
+    .article-shell img{max-width:100%;border-radius:12px;border:1px solid var(--line)}
+    .article-shell table{width:100%;border-collapse:collapse;margin:1.2em 0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+    .article-shell th,.article-shell td{padding:.7em .8em;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+    .article-shell th{background:rgba(83,122,101,.06)}
+    .article-shell hr{border:none;border-top:1px solid var(--line);margin:2em 0}
+    .article-shell .source-link{display:inline-block;margin-top:20px;color:var(--muted);font-size:.9rem}
+    .status{padding:22px;border:1px dashed #cbd8cc;border-radius:16px;color:var(--muted);text-align:center;background:rgba(255,255,255,.55)}
+    footer{border-top:1px solid var(--line);padding:24px 0 34px;color:var(--muted);font-size:.88rem}
+    .footer-inner{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}footer a{text-decoration:none}footer a:hover{color:var(--dark)}
+    @media(max-width:680px){.topbar{align-items:flex-start}}
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <nav class="topbar" aria-label="主导航">
+      <a class="brand" href="./index.html">DAO<span>SIGHT</span></a>
+      <a class="back" href="./index.html">← 返回栏目</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <article id="reader" class="article-shell" aria-live="polite">
+      <div class="status">正在加载文章……</div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span>© DaoSight · 思想与世界的探索</span>
+      <a href="./index.html">返回修行探索栏目 ↑</a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    (function () {
+      const reader = document.getElementById('reader');
+
+      function resolveFileParam() {
+        const params = new URLSearchParams(window.location.search);
+        const raw = params.get('f') || '';
+        const candidate = decodeURIComponent(raw).replace(/\\/g, '/').trim();
+        if (!candidate) return null;
+        if (candidate.startsWith('/') || candidate.includes('..')) return null;
+        const normalized = candidate.replace(/^\.\//, '').replace(/^\//, '');
+        return normalized;
+      }
+
+      function buildRawUrl(relativePath) {
+        const repoRoot = 'https://raw.githubusercontent.com/DaoSight/daosight.github.io/main/';
+        const repoRelative = relativePath.startsWith('daoroad/') ? relativePath : 'daoroad/' + relativePath;
+        return repoRoot + repoRelative.split('/').map(encodeURIComponent).join('/');
+      }
+
+      function displayError(message) {
+        reader.innerHTML = '<div class="status">' + message + '</div>';
+      }
+
+      const fileParam = resolveFileParam();
+      if (!fileParam || !/\.(md|markdown)$/i.test(fileParam)) {
+        displayError('未提供有效的 Markdown 文件参数。请从栏目页点击文章进入。');
+        return;
+      }
+
+      const rawUrl = buildRawUrl(fileParam);
+      const label = fileParam.split('/').pop().replace(/\.(md|markdown)$/i, '');
+
+      fetch(rawUrl)
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error('无法获取文章内容。');
+          }
+          return response.text();
+        })
+        .then(function (text) {
+          const html = marked.parse(text, {
+            gfm: true,
+            breaks: true,
+            headerIds: false,
+            smartLists: true,
+            smartypants: true
+          });
+
+          const sourceHref = 'https://github.com/DaoSight/daosight.github.io/blob/main/' + (fileParam.startsWith('daoroad/') ? fileParam : 'daoroad/' + fileParam);
+          reader.innerHTML = '<h1>' + label.replace(/[-_]/g, ' ') + '</h1>' + html + '<a class="source-link" href="' + sourceHref + '" target="_blank" rel="noopener noreferrer">查看 GitHub 原文 ↗</a>';
+          document.title = label.replace(/[-_]/g, ' ') + '｜DaoSight';
+        })
+        .catch(function (error) {
+          displayError('文章加载失败：' + error.message + '<br>请确认链接是否正确，或返回栏目页重试。');
+        });
+    }());
+  </script>
+</body>
+</html>
