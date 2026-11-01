@@ -40,10 +40,20 @@
     .article-shell th{background:rgba(83,122,101,.06)}
     .article-shell hr{border:none;border-top:1px solid var(--line);margin:2em 0}
     .article-shell .source-link{display:inline-block;margin-top:20px;color:var(--muted);font-size:.9rem}
+    .toc-wrap{margin:0 0 1.4em;padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.55)}
+    .toc-wrap h3{margin:0 0 12px;font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .toc{display:flex;flex-wrap:wrap;gap:8px 10px;padding:0;margin:0;list-style:none}
+    .toc a{display:inline-flex;align-items:center;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(83,122,101,.04);text-decoration:none;color:var(--dark);font-size:.85rem}
+    .toc a:hover{border-color:#adc4b0;background:rgba(83,122,101,.08)}
+    .toc .level-3{margin-left:10px}
+    .article-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px;padding-top:16px;border-top:1px solid var(--line)}
+    .article-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 16px;border:1px solid var(--line);border-radius:999px;text-decoration:none;background:rgba(255,255,255,.5);color:var(--dark)}
+    .article-nav a:hover{border-color:#adc4b0;background:rgba(83,122,101,.04)}
+    .article-nav .nav-group{display:flex;gap:10px;flex-wrap:wrap}
     .status{padding:22px;border:1px dashed #cbd8cc;border-radius:16px;color:var(--muted);text-align:center;background:rgba(255,255,255,.55)}
     footer{border-top:1px solid var(--line);padding:24px 0 34px;color:var(--muted);font-size:.88rem}
     .footer-inner{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}footer a{text-decoration:none}footer a:hover{color:var(--dark)}
-    @media(max-width:680px){.topbar{align-items:flex-start}}
+    @media(max-width:680px){.topbar{align-items:flex-start}.article-nav{flex-direction:column;align-items:stretch}.article-nav .nav-group{width:100%}.article-nav a{width:100%}}
   </style>
 </head>
 <body>
@@ -71,6 +81,10 @@
   <script>
     (function () {
       const reader = document.getElementById('reader');
+
+      function sanitizeTitle(value) {
+        return value.replace(/[-_]/g, ' ').trim();
+      }
 
       function resolveFileParam() {
         const params = new URLSearchParams(window.location.search);
@@ -100,12 +114,57 @@
         const baseDir = basePath.split('/').slice(0, -1).join('/');
         const candidate = normalized.startsWith('/') ? normalized.slice(1) : normalized;
         const cleaned = candidate.startsWith('daoroad/') ? candidate : (baseDir && baseDir !== 'daoroad' ? baseDir + '/' + candidate : 'daoroad/' + candidate);
-        const finalPath = cleaned.replace(/^\.\//, '');
-        return './reader.html?f=' + encodeURIComponent(finalPath);
+        return './reader.html?f=' + encodeURIComponent(cleaned.replace(/^\.\//, ''));
+      }
+
+      function normalizeForAnchor(value) {
+        const text = value
+          .toLowerCase()
+          .replace(/<[^>]+>/g, '')
+          .replace(/[“”‘’]/g, '')
+          .replace(/[^\u4e00-\u9fa5a-z0-9\s-]/g, '')
+          .trim();
+        return text.replace(/\s+/g, '-');
+      }
+
+      function buildTocFromReader() {
+        const headings = Array.from(reader.querySelectorAll('h2, h3'));
+        if (!headings.length) return '';
+
+        const items = headings.map(function (heading) {
+          const level = heading.tagName.toLowerCase() === 'h3' ? 'level-3' : 'level-2';
+          const id = heading.id || normalizeForAnchor(heading.textContent || 'section');
+          heading.id = id;
+          return '<li class="' + level + '"><a href="#' + id + '">' + heading.textContent + '</a></li>';
+        });
+
+        return '<div class="toc-wrap"><h3>目录</h3><ul class="toc">' + items.join('') + '</ul></div>';
       }
 
       function displayError(message) {
         reader.innerHTML = '<div class="status">' + message + '</div>';
+      }
+
+      async function loadArticleList() {
+        const response = await fetch('https://api.github.com/repos/DaoSight/daosight.github.io/contents/daoroad', {
+          headers: { Accept: 'application/vnd.github+json' }
+        });
+        if (!response.ok) {
+          throw new Error('无法读取文章目录');
+        }
+        const files = await response.json();
+        return files.filter(function (file) {
+          return file.type === 'file' && /\.(md|markdown)$/i.test(file.name);
+        }).sort(function (a, b) {
+          return a.name.localeCompare(b.name, 'zh-CN');
+        });
+      }
+
+      function createNav(prevPath, nextPath) {
+        const listHref = './index.html';
+        const prevLink = prevPath ? '<a href="./reader.html?f=' + encodeURIComponent(prevPath) + '">← 上一篇</a>' : '<span style="opacity:.45;pointer-events:none;">← 上一篇</span>';
+        const nextLink = nextPath ? '<a href="./reader.html?f=' + encodeURIComponent(nextPath) + '">下一篇 →</a>' : '<span style="opacity:.45;pointer-events:none;">下一篇 →</span>';
+        return '<div class="article-nav"><a href="' + listHref + '">返回列表</a><div class="nav-group">' + prevLink + nextLink + '</div></div>';
       }
 
       const fileParam = resolveFileParam();
@@ -118,6 +177,10 @@
       const label = fileParam.split('/').pop().replace(/\.(md|markdown)$/i, '');
 
       const renderer = new marked.Renderer();
+      renderer.heading = function (text, level, raw) {
+        const id = normalizeForAnchor(raw || text || 'section');
+        return '<h' + level + ' id="' + id + '">' + text + '</h' + level + '>';
+      };
       renderer.link = function (href, title, text) {
         const cleanHref = href || '';
         const target = cleanHref.startsWith('http') || cleanHref.startsWith('mailto:') || cleanHref.startsWith('data:') ? '_blank' : '_self';
@@ -150,8 +213,24 @@
           });
 
           const sourceHref = 'https://github.com/DaoSight/daosight.github.io/blob/main/' + (fileParam.startsWith('daoroad/') ? fileParam : 'daoroad/' + fileParam);
-          reader.innerHTML = '<div class="meta"><span>Markdown</span><span>' + fileParam.replace(/^daoroad\//, '') + '</span></div><h1>' + label.replace(/[-_]/g, ' ') + '</h1>' + html + '<a class="source-link" href="' + sourceHref + '" target="_blank" rel="noopener noreferrer">查看 GitHub 原文 ↗</a>';
-          document.title = label.replace(/[-_]/g, ' ') + '｜DaoSight';
+          reader.innerHTML = '<div class="meta"><span>Markdown</span><span>' + fileParam.replace(/^daoroad\//, '') + '</span></div><h1>' + sanitizeTitle(label) + '</h1>' + buildTocFromReader() + html + '<a class="source-link" href="' + sourceHref + '" target="_blank" rel="noopener noreferrer">查看 GitHub 原文 ↗</a>';
+          document.title = sanitizeTitle(label) + '｜DaoSight';
+
+          return loadArticleList();
+        })
+        .then(function (articles) {
+          if (!articles.length) return;
+          const index = articles.findIndex(function (item) {
+            return item.path === (fileParam.startsWith('daoroad/') ? fileParam : 'daoroad/' + fileParam);
+          });
+          if (index < 0) return;
+          const prevPath = index > 0 ? articles[index - 1].path.replace(/^daoroad\//, '') : null;
+          const nextPath = index < articles.length - 1 ? articles[index + 1].path.replace(/^daoroad\//, '') : null;
+          const nav = createNav(prevPath, nextPath);
+          const articleBody = reader.querySelector('.source-link');
+          if (articleBody) {
+            articleBody.insertAdjacentHTML('afterend', nav);
+          }
         })
         .catch(function (error) {
           displayError('文章加载失败：' + error.message + '<br>请确认链接是否正确，或返回栏目页重试。');
