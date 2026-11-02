@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https: data:; connect-src 'self' https://api.github.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; base-uri 'none'">
+<meta name="theme-color" content="#f6f8f4">
+<title>文章阅读｜DaoSight</title>
+<style>
+  :root{
+    --bg:#f6f8f4; --paper:#fff; --ink:#24352f; --ink-soft:#4a5f54; --muted:#68776f;
+    --green:#537a65; --dark:#345743; --line:#dce5dc; --line-soft:#e8eee7; --gold:#b38a4a;
+    --serif:"Songti SC","STSong","SimSun",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; color:var(--ink); background:var(--bg);
+    font-family:var(--sans); line-height:1.9; -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit}
+
+  #bar{position:fixed;top:0;left:0;height:2px;width:0;background:var(--gold);z-index:50;transition:width .1s linear}
+
+  .wrap{width:min(1060px,calc(100% - 36px));margin:0 auto}
+  header{padding:24px 0 0}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+  .brand{text-decoration:none;font-weight:700;letter-spacing:.08em;font-size:.95rem}
+  .brand span{color:var(--green)}
+  .back{color:var(--muted);font-size:.9rem;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:7px 14px;background:rgba(255,255,255,.6);transition:.18s}
+  .back:hover{color:var(--dark);border-color:#a8c0ad}
+
+  main{padding:34px 0 80px}
+  .post{max-width:720px;margin:0 auto}
+
+  .post-head{margin-bottom:34px;padding-bottom:26px;border-bottom:1px solid var(--line)}
+  .post-kicker{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:16px}
+  .post-kicker:before{content:"";width:25px;height:1px;background:var(--gold)}
+  .post-title{
+    margin:0;font-family:var(--serif);font-weight:500;letter-spacing:.02em;
+    font-size:clamp(1.65rem,4.4vw,2.25rem);line-height:1.45;color:var(--dark);
+  }
+  .post-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:18px;color:var(--muted);font-size:.86rem}
+  .post-meta a{color:var(--green);text-decoration:none;border-bottom:1px solid rgba(83,122,101,.3)}
+  .post-meta a:hover{border-bottom-color:var(--green)}
+  .chip{display:inline-block;padding:2px 10px;border-radius:999px;background:#eef3ec;color:var(--dark);font-size:.8rem;border:1px solid var(--line-soft)}
+  .dot{display:inline-block;width:3px;height:3px;border-radius:50%;background:#b9c7bb;vertical-align:middle}
+  .post-body .srcbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;color:var(--muted);font-size:.86rem;margin:0 0 1.8em}
+
+  .toc{margin:0 0 36px;border:1px solid var(--line);border-radius:14px;background:#fbfcfa;padding:0 20px}
+  .toc summary{cursor:pointer;padding:14px 0;font-size:.92rem;color:var(--dark);font-weight:600;list-style:none;display:flex;align-items:center;gap:10px}
+  .toc summary::-webkit-details-marker{display:none}
+  .toc summary:after{content:"展开";margin-left:auto;font-weight:400;font-size:.8rem;color:var(--muted)}
+  .toc[open] summary:after{content:"收起"}
+  .toc ol{list-style:none;margin:0;padding:2px 0 14px;border-top:1px solid var(--line-soft)}
+  .toc li{margin:0}
+  .toc a{display:block;padding:6px 0;font-size:.9rem;color:var(--ink-soft);text-decoration:none;line-height:1.6;border-left:2px solid transparent;padding-left:12px}
+  .toc a:hover{color:var(--dark);border-left-color:var(--gold)}
+  .toc .lv2 a{padding-left:30px;font-size:.86rem;color:var(--muted)}
+  .toc .lv3 a{padding-left:48px;font-size:.85rem;color:var(--muted)}
+
+  .post-body{font-size:1.06rem;color:var(--ink)}
+  .post-body p{margin:0 0 1.35em}
+  .post-body h1,.post-body h2,.post-body h3,.post-body h4{
+    font-family:var(--serif);font-weight:600;letter-spacing:.02em;color:var(--dark);
+    scroll-margin-top:24px;
+  }
+  .post-body h1,.post-body h2{font-size:1.32rem;line-height:1.6;margin:2.4em 0 .9em;padding-bottom:.45em;border-bottom:1px solid var(--line-soft)}
+  .post-body h3{font-size:1.12rem;font-family:var(--sans);font-weight:600;margin:1.9em 0 .7em;color:var(--dark)}
+  .post-body h4{font-size:1rem;font-family:var(--sans);font-weight:600;margin:1.6em 0 .6em;color:var(--ink)}
+  .post-body h1:first-child,.post-body h2:first-child,.post-body h3:first-child{margin-top:0}
+  .post-body strong{font-weight:600;color:var(--dark)}
+  .post-body em{font-style:italic;color:var(--ink-soft)}
+  .post-body hr{border:0;height:1px;background:var(--line);margin:2.6em auto;max-width:180px}
+  .post-body blockquote{
+    margin:1.8em 0;padding:.35em 0 .35em 1.25em;border-left:3px solid #cbdbcf;
+    color:var(--ink-soft);font-family:var(--serif);font-size:1.02em;
+  }
+  .post-body blockquote p{margin:0 0 .8em}
+  .post-body blockquote p:last-child{margin-bottom:0}
+  .post-body blockquote strong{color:var(--dark)}
+  .post-body ul,.post-body ol{margin:0 0 1.35em;padding-left:1.4em}
+  .post-body li{margin:.35em 0}
+  .post-body img{display:block;max-width:100%;height:auto;margin:2em auto;border-radius:10px;border:1px solid var(--line-soft);background:#fafbf9}
+  .post-body a{color:var(--green);text-decoration:none;border-bottom:1px solid rgba(83,122,101,.32)}
+  .post-body a:hover{border-bottom-color:var(--green);color:var(--dark)}
+  .post-body code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em;background:#eef2ec;padding:.12em .4em;border-radius:4px}
+  .post-body pre{background:#f2f5f1;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;margin:1.8em 0}
+  .post-body pre code{background:none;padding:0}
+  .post-body table{width:100%;border-collapse:collapse;margin:1.9em 0;font-size:.95em}
+  .post-body th,.post-body td{border:1px solid var(--line);padding:10px 14px;text-align:left;vertical-align:top}
+  .post-body th{background:#f0f4ef;font-weight:600;color:var(--dark)}
+  .post-body tr:nth-child(even) td{background:#fbfcfa}
+
+  .post-foot{margin-top:52px;padding-top:26px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+  .pager{display:flex;gap:10px;flex-wrap:wrap}
+  .pager a,.pager span{
+    display:inline-block;text-decoration:none;font-size:.88rem;padding:9px 16px;border:1px solid var(--line);
+    border-radius:999px;background:rgba(255,255,255,.7);color:var(--ink-soft);transition:.18s;max-width:44vw;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .pager a:hover{border-color:#a8c0ad;color:var(--dark);background:#fff}
+  .pager span{opacity:.42}
+
+  .state{max-width:640px;margin:80px auto;text-align:center;color:var(--muted);font-size:.95rem;line-height:2}
+  .state b{display:block;color:var(--dark);font-family:var(--serif);font-size:1.2rem;margin-bottom:10px}
+  .state a{color:var(--green);text-decoration:none;border-bottom:1px solid rgba(83,122,101,.35)}
+
+  footer{padding:0 0 46px}
+  .footer-inner{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:.84rem}
+  .footer-inner a{text-decoration:none;color:var(--muted)}
+  .footer-inner a:hover{color:var(--dark)}
+
+  @media (max-width:640px){
+    .wrap{width:calc(100% - 30px)}
+    main{padding:24px 0 56px}
+    .post-body{font-size:1.02rem}
+    .post-body h1,.post-body h2{font-size:1.2rem}
+    .post-foot{flex-direction:column;align-items:stretch}
+    .pager a,.pager span{max-width:none;flex:1;text-align:center}
+  }
+</style>
+</head>
+<body>
+<div id="bar" aria-hidden="true"></div>
+
+<header class="wrap">
+  <nav class="topbar">
+    <a class="brand" href="./" id="brandLink">DAO<span>SIGHT</span></a>
+    <a class="back" href="./" id="backLink">← 返回栏目</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <article class="post" id="post">
+    <div class="state">正在载入文章……</div>
+  </article>
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>© DaoSight · 思想与世界的探索</span>
+    <a href="./" id="footLink">返回栏目 ↑</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var post = document.getElementById('post');
+  var bar = document.getElementById('bar');
+
+  /* ---------- 路径工具 ---------- */
+
+  var HERE = location.pathname.replace(/[^/]*$/, '');        // '/', '/daoroad/'
+  var SEG = HERE === '/' ? '' : HERE.replace(/\/$/, '').split('/').pop();
+
+  function cleanParam(raw) {
+    if (!raw) return null;
+    try { raw = decodeURIComponent(raw); } catch (e) { return null; }
+    raw = raw.replace(/\\/g, '/').trim().replace(/^\.\//, '');
+    if (!raw || raw.indexOf('://') !== -1) return null;
+    if (raw.split('/').indexOf('..') !== -1) return null;
+    if (raw.charAt(0) === '/') return null;
+    if (!/\.(md|markdown|html?)$/i.test(raw)) return null;
+    return raw;
+  }
+
+  function fetchPath(f) {
+    if (!SEG) return './' + f;
+    if (f.indexOf(SEG + '/') === 0) return '../' + f.slice(SEG.length + 1);
+    return './' + f;
+  }
+
+  function listPath(f) {
+    if (!SEG) return './' + f.split('/')[0] + '/';
+    return './';
+  }
+
+  function dirOf(f) {
+    var p = f.split('/');
+    p.pop();
+    var dir = p.join('/');
+    if (!SEG) return './' + (dir ? dir + '/' : '');
+    return dir ? './' + dir + '/' : './';
+  }
+
+  /* ---------- 转义与行内解析 ---------- */
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function safeHref(u) {
+    var s = String(u || '').trim();
+    if (/^(javascript|vbscript|data):/i.test(s)) return '#';
+    return s;
+  }
+
+  var MARK = '\u0001';
+
+  function inline(raw, base) {
+    var s = esc(raw);
+
+    var codes = [];
+    s = s.replace(/`([^`]+)`/g, function (m, c) {
+      codes.push(c);
+      return MARK + (codes.length - 1) + MARK;
+    });
+
+    s = s.replace(/!\[([^\]]*)\]\(([^\s)]+)(?:\s+&quot;([^&]*)&quot;)?\)/g, function (m, alt, src, title) {
+      var url = safeHref(src);
+      if (url.charAt(0) !== '/' && !/^[a-z]+:/i.test(url)) url = base + url;
+      return '<img src="' + url + '" alt="' + alt + '"' +
+        (title ? ' title="' + title + '"' : '') +
+        ' referrerpolicy="no-referrer" loading="lazy" decoding="async">';
+    });
+
+    s = s.replace(/\[([^\]]*)\]\(([^\s)]+)(?:\s+&quot;([^&]*)&quot;)?\)/g, function (m, txt, href, title) {
+      var url = safeHref(href);
+      var ext = /^(https?:|mailto:)/i.test(url);
+      if (!ext && url.charAt(0) !== '#' && url.charAt(0) !== '/') {
+        if (/\.(md|markdown)$/i.test(url)) {
+          url = './reader.html?f=' + encodeURIComponent(url);
+        } else {
+          url = base + url;
+        }
+      }
+      return '<a href="' + url + '"' + (ext ? ' target="_blank" rel="noopener noreferrer"' : '') +
+        (title ? ' title="' + title + '"' : '') + '>' + txt + '</a>';
+    });
+
+    s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    s = s.replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, '$1<em>$2</em>');
+    s = s.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+
+    s = s.replace(new RegExp(MARK + '(\\d+)' + MARK, 'g'), function (m, i) {
+      return '<code>' + codes[Number(i)] + '</code>';
+    });
+
+    return s;
+  }
+
+  /* ---------- 块级解析 ---------- */
+
+  var usedIds = {};
+
+  function slugify(text, n) {
+    var t = String(text).replace(/<[^>]+>/g, '')
+      .replace(/[「」『』“”‘’"'《》〈〉【】〔〕（）()[\]:：，。、；；！？!?…—–\-·\/\\|]/g, ' ')
+      .replace(/[^\u4e00-\u9fa5a-zA-Z0-9 ]/g, '')
+      .trim().replace(/\s+/g, '-');
+    if (!t) t = 'sec';
+    t = t.slice(0, 48);
+    if (usedIds[t]) { usedIds[t]++; t = t + '-' + usedIds[t]; } else { usedIds[t] = 1; }
+    return t;
+  }
+
+  var RE_HR = /^\s*([-*_])\s*(\1\s*){2,}$/;
+  var RE_H = /^\s*(#{1,6})\s+(.*?)\s*#*\s*$/;
+  var RE_Q = /^\s*>\s?/;
+  var RE_UL = /^\s*[-*+]\s+/;
+  var RE_OL = /^\s*\d+[.)]\s+/;
+  var RE_TBL = /^\s*\|/;
+
+  function parse(md, base) {
+    usedIds = {};
+    var lines = md.replace(/\r\n?/g, '\n').split('\n');
+    var out = [];
+    var heads = [];
+    var i = 0;
+
+    function isBlockStart(l) {
+      return RE_HR.test(l) || RE_H.test(l) || RE_Q.test(l) || RE_UL.test(l) ||
+        RE_OL.test(l) || RE_TBL.test(l) || /^\s*```/.test(l);
+    }
+
+    while (i < lines.length) {
+      var line = lines[i];
+      var t = line.trim();
+
+      if (!t) { i++; continue; }
+
+      if (/^\s*```/.test(line)) {
+        i++;
+        var code = [];
+        while (i < lines.length && !/^\s*```/.test(lines[i])) { code.push(lines[i]); i++; }
+        i++;
+        out.push('<pre><code>' + esc(code.join('\n')) + '</code></pre>');
+        continue;
+      }
+
+      if (RE_HR.test(line)) { out.push('<hr>'); i++; continue; }
+
+      var h = RE_H.exec(line);
+      if (h) {
+        var lv = h[1].length;
+        var txt = h[2];
+        var id = slugify(txt, heads.length);
+        heads.push({ level: lv, text: txt.replace(/\*\*/g, ''), id: id });
+        out.push('<h' + lv + ' id="' + id + '">' + inline(txt, base) + '</h' + lv + '>');
+        i++;
+        continue;
+      }
+
+      if (RE_TBL.test(line) && i + 1 < lines.length && /^\s*\|[\s:|-]+\|?\s*$/.test(lines[i + 1])) {
+        var rows = [];
+        while (i < lines.length && RE_TBL.test(lines[i])) { rows.push(lines[i].trim()); i++; }
+        var head = splitRow(rows[0]);
+        var body = rows.slice(2).map(splitRow);
+        var html = '<table><thead><tr>';
+        head.forEach(function (c) { html += '<th>' + inline(c, base) + '</th>'; });
+        html += '</tr></thead><tbody>';
+        body.forEach(function (r) {
+          html += '<tr>';
+          head.forEach(function (_, ci) { html += '<td>' + inline(r[ci] || '', base) + '</td>'; });
+          html += '</tr>';
+        });
+        html += '</tbody></table>';
+        out.push(html);
+        continue;
+      }
+
+      if (RE_Q.test(line)) {
+        var q = [];
+        while (i < lines.length && RE_Q.test(lines[i])) {
+          q.push(lines[i].replace(RE_Q, ''));
+          i++;
+        }
+        out.push(renderQuote(q, base));
+        continue;
+      }
+
+      if (RE_UL.test(line)) {
+        var ul = [];
+        while (i < lines.length && RE_UL.test(lines[i])) {
+          ul.push(lines[i].replace(RE_UL, ''));
+          i++;
+        }
+        out.push('<ul>' + ul.map(function (x) { return '<li>' + inline(x, base) + '</li>'; }).join('') + '</ul>');
+        continue;
+      }
+
+      if (RE_OL.test(line)) {
+        var ol = [];
+        while (i < lines.length && RE_OL.test(lines[i])) {
+          ol.push(lines[i].replace(RE_OL, ''));
+          i++;
+        }
+        out.push('<ol>' + ol.map(function (x) { return '<li>' + inline(x, base) + '</li>'; }).join('') + '</ol>');
+        continue;
+      }
+
+      var buf = [];
+      while (i < lines.length && lines[i].trim() && !isBlockStart(lines[i])) {
+        buf.push(lines[i].trim());
+        i++;
+      }
+      if (buf.length) {
+        out.push('<p>' + buf.map(function (x) { return inline(x, base); }).join('<br>') + '</p>');
+      }
+    }
+
+    return { html: out.join('\n'), heads: heads };
+  }
+
+  function splitRow(row) {
+    return row.replace(/^\s*\|/, '').replace(/\|\s*$/, '').split('|').map(function (c) { return c.trim(); });
+  }
+
+  function renderQuote(lines, base) {
+    var joined = lines.join('\n');
+    var src = /来源[：:]\s*(.+)/.exec(joined);
+    var time = /(?:发布时间|时间)[：:]\s*([0-9]{4}[-./][0-9]{1,2}[-./][0-9]{1,2}[^\n<]*)/.exec(joined);
+    var link = /原文链接[：:]\s*(https?:\/\/[^\s<)]+)/.exec(joined);
+
+    if (link) {
+      var parts = [];
+      if (src) {
+        var m = /[「『]([^」』]+)[」』]/.exec(src[1]);
+        var name = m ? m[1] : src[1].split(/[·|｜]/)[0].trim();
+        parts.push('<span class="chip">' + esc(name) + '</span>');
+      }
+      if (time) parts.push('<span>' + esc(time[1].replace(/(\d{2}):\d{2}.*/, '').trim()) + '</span>');
+      parts.push('<a href="' + safeHref(link[1]) + '" target="_blank" rel="noopener noreferrer">公众号原文 ↗</a>');
+      return '<div class="srcbar" data-src="1">' + parts.join('<i class="dot"></i>') + '</div>';
+    }
+
+    var ps = [];
+    var cur = [];
+    lines.forEach(function (l) {
+      if (!l.trim()) { if (cur.length) { ps.push(cur.join('<br>')); cur = []; } }
+      else cur.push(l);
+    });
+    if (cur.length) ps.push(cur.join('<br>'));
+    if (!ps.length) return '';
+    return '<blockquote>' + ps.map(function (p) { return '<p>' + inline(p, base) + '</p>'; }).join('') + '</blockquote>';
+  }
+
+  /* ---------- 页面组装 ---------- */
+
+  function stripFirst(html, level) {
+    return html.replace(new RegExp('^\\s*<h' + level + '[^>]*>[\\s\\S]*?</h' + level + '>'), '');
+  }
+
+  function guessTitle(file) {
+    var name = file.split('/').pop().replace(/\.(md|markdown)$/i, '');
+    return name.replace(/^周易参同契·量子意识论语境重述\s*/, '');
+  }
+
+  function render(file, md) {
+    var base = dirOf(file);
+    var r = parse(md, base);
+    var heads = r.heads;
+    var html = r.html;
+
+    var title = null;
+    var first = heads.length ? heads[0] : null;
+    if (first && first.level <= 2) {
+      title = first.text.trim();
+      html = stripFirst(html, first.level);
+      heads = heads.slice(1);
+
+      var sub = /^\s*<h([1-6])[^>]*>([\s\S]*?)<\/h\1>/.exec(html);
+      if (sub) {
+        var subText = sub[2].replace(/<[^>]+>/g, '').trim();
+        if (/^[—–]{1,2}/.test(subText) && Number(sub[1]) >= first.level) {
+          title = title + subText;
+          html = html.replace(sub[0], '');
+          heads = heads.slice(1);
+        }
+      }
+
+      var subp = /^\s*<p><strong>([—–][^<]{0,70})<\/strong><\/p>/.exec(html);
+      if (subp) {
+        title = title + subp[1].trim();
+        html = html.replace(subp[0], '');
+      }
+    }
+    if (!title) title = guessTitle(file);
+
+    var metaMatch = /<div class="srcbar" data-src="1">([\s\S]*?)<\/div>/.exec(html);
+    var metaInner = '';
+    if (metaMatch) {
+      metaInner = metaMatch[1];
+      html = html.replace(metaMatch[0], '');
+    }
+
+    var toc = '';
+    var tocItems = heads.filter(function (h) { return h.level <= 3; });
+    if (tocItems.length >= 4) {
+      toc = '<details class="toc"><summary>本文目录 · ' + tocItems.length + ' 节</summary><ol>' +
+        tocItems.map(function (h) {
+          return '<li class="lv' + h.level + '"><a href="#' + h.id + '">' + esc(h.text) + '</a></li>';
+        }).join('') + '</ol></details>';
+    }
+
+    var words = md.replace(/[#*>\-|`]/g, '').replace(/\s+/g, '').length;
+    var minutes = Math.max(1, Math.round(words / 420));
+
+    post.innerHTML =
+      '<div class="post-head">' +
+        '<div class="post-kicker">' + esc(columnName(file)) + '</div>' +
+        '<h1 class="post-title">' + esc(title) + '</h1>' +
+        '<div class="post-meta">' + (metaInner ? metaInner + '<i class="dot"></i>' : '') +
+          '<span>约 ' + minutes + ' 分钟</span></div>' +
+      '</div>' +
+      toc +
+      '<div class="post-body">' + html + '</div>' +
+      '<div class="post-foot">' +
+        '<a class="back" href="' + listPath(file) + '">← 返回栏目</a>' +
+        '<div class="pager" id="pager"></div>' +
+      '</div>';
+
+    document.title = title + '｜DaoSight';
+
+    var b = listPath(file);
+    document.getElementById('backLink').href = b;
+    document.getElementById('footLink').href = b;
+    document.getElementById('brandLink').href = SEG ? '../index.html' : './index.html';
+
+    loadPager(file);
+  }
+
+  function columnName(file) {
+    var map = { daohai: '道海理论', quantum: '量子心解', consciousness: '意识与存在', daoroad: '修行探索', research: '阅读与研究' };
+    var seg = file.split('/')[0];
+    return map[seg] || 'DaoSight';
+  }
+
+  /* ---------- 上/下篇（失败即静默，绝不影响正文） ---------- */
+
+  function loadPager(file) {
+    var pager = document.getElementById('pager');
+    if (!pager) return;
+
+    var dir = file.split('/').length > 1 ? file.split('/')[0] : SEG;
+    if (!dir) return;
+
+    var target = file.split('/').pop();
+    var cacheKey = 'ds-list-' + dir;
+    var cached = null;
+
+    try {
+      var raw = sessionStorage.getItem(cacheKey);
+      if (raw) {
+        var obj = JSON.parse(raw);
+        if (obj && Date.now() - obj.t < 600000) cached = obj.names;
+      }
+    } catch (e) {}
+
+    if (cached) { buildPager(cached, target, pager); return; }
+
+    fetch('https://api.github.com/repos/DaoSight/daosight.github.io/contents/' + dir, {
+      headers: { Accept: 'application/vnd.github+json' }
+    }).then(function (res) {
+      if (!res.ok) throw new Error('skip');
+      return res.json();
+    }).then(function (files) {
+      if (!Array.isArray(files)) return;
+      var names = files.filter(function (f) {
+        return f.type === 'file' && /\.(md|markdown)$/i.test(f.name);
+      }).map(function (f) { return f.name; }).sort(function (a, b) {
+        return a.localeCompare(b, 'zh-CN');
+      });
+      try { sessionStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), names: names })); } catch (e) {}
+      buildPager(names, target, pager);
+    }).catch(function () { /* 静默：正文不受影响 */ });
+  }
+
+  function buildPager(names, target, pager) {
+    var idx = names.indexOf(target);
+    if (idx < 0) return;
+
+    var prev = idx > 0 ? names[idx - 1] : null;
+    var next = idx < names.length - 1 ? names[idx + 1] : null;
+
+    function href(n) {
+      return './reader.html?f=' + encodeURIComponent(headerDir() + n);
+    }
+
+    var html = '';
+    html += prev
+      ? '<a href="' + href(prev) + '" title="' + esc(short(prev)) + '">← ' + esc(short(prev)) + '</a>'
+      : '<span>已是第一篇</span>';
+    html += next
+      ? '<a href="' + href(next) + '" title="' + esc(short(next)) + '">' + esc(short(next)) + ' →</a>'
+      : '<span>已是最后一篇</span>';
+    pager.innerHTML = html;
+  }
+
+  function headerDir() {
+    return SEG ? '' : (CURRENT_DIR ? CURRENT_DIR + '/' : '');
+  }
+
+  var CURRENT_DIR = '';
+
+  function short(name) {
+    var s = name.replace(/\.(md|markdown)$/i, '');
+    s = s.replace(/^周易参同契·量子意识论语境重述/, '参同契 ');
+    return s.length > 18 ? s.slice(0, 17) + '…' : s;
+  }
+
+  /* ---------- 启动 ---------- */
+
+  function fail(title, detail) {
+    post.innerHTML = '<div class="state"><b>' + esc(title) + '</b>' + detail +
+      '<br><br><a href="./index.html">返回 DaoSight 首页</a></div>';
+  }
+
+  var file = cleanParam(new URLSearchParams(location.search).get('f'));
+  if (!file) {
+    fail('没有指定文章', '请从栏目页点击文章进入，或检查链接里的 <code>?f=</code> 参数。');
+    return;
+  }
+
+  if (/\.html?$/i.test(file)) { location.replace(fetchPath(file)); return; }
+
+  CURRENT_DIR = SEG ? SEG : file.split('/')[0];
+
+  fetch(fetchPath(file), { cache: 'no-cache' })
+    .then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.text();
+    })
+    .then(function (md) {
+      if (!md || !md.trim()) throw new Error('文件是空的');
+      render(file, md);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })
+    .catch(function (err) {
+      fail('文章没能载入', '路径：' + esc(file) + '<br>原因：' + esc(err.message) +
+        '<br>如果刚提交过，GitHub Pages 可能需要一两分钟生效。');
+    });
+
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  }
+}());
+</script>
+</body>
+</html>
