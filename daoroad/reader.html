@@ -1,92 +1,719 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f6f8f4">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.jsdelivr.net https://raw.githubusercontent.com https://api.github.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; connect-src 'self' https://raw.githubusercontent.com https://api.github.com; font-src 'self' data: https://cdn.jsdelivr.net;">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
   <title>文章阅读｜DaoSight</title>
   <style>
-    :root{--bg:#f6f8f4;--paper:rgba(255,255,255,.94);--ink:#24352f;--muted:#68776f;--green:#537a65;--dark:#345743;--line:#dce5dc;--gold:#b38a4a;--shadow:0 20px 55px rgba(38,63,48,.08)}
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;color:var(--ink);background:radial-gradient(ellipse at 12% 0%,rgba(190,213,190,.32),transparent 38rem),radial-gradient(ellipse at 100% 20%,rgba(227,215,184,.2),transparent 34rem),var(--bg)}
-    a{color:inherit}
-    .wrap{width:min(1080px,calc(100% - 36px));margin:0 auto}
-    header{padding:24px 0 0}
-    .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:18px;border-bottom:1px solid var(--line)}
-    .brand{text-decoration:none;font-weight:700;letter-spacing:.08em}.brand span{color:var(--green)}
-    .back{color:var(--muted);font-size:.92rem;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:7px 14px;background:rgba(255,255,255,.55)}
-    .back:hover{color:var(--dark);border-color:#a8c0ad}
-    main{padding:28px 0 72px}
-    .article-shell{width:min(100%, 980px);margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(249,250,247,.94));border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:clamp(22px,4vw,42px)}
-    .meta{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 18px;color:var(--muted);font-size:.82rem;letter-spacing:.08em;text-transform:uppercase}
-    .meta span{display:inline-flex;align-items:center;padding:.4rem .7rem;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.5)}
-    .article-shell h1,.article-shell h2,.article-shell h3,.article-shell h4{color:var(--dark);line-height:1.35;margin-top:1.8em;margin-bottom:.7em;font-weight:700}
-    .article-shell h1{margin-top:0;font-size:clamp(2rem,5vw,3rem);border-bottom:1px solid var(--line);padding-bottom:12px;font-weight:800}
-    .article-shell h2{font-size:clamp(1.5rem,3vw,2rem)}
-    .article-shell h3{font-size:1.2rem}
-    .article-shell p,.article-shell li,.article-shell blockquote,.article-shell td,.article-shell th{color:var(--ink);line-height:1.9;font-size:1.02rem}
-    .article-shell p{margin:1em 0}
-    .article-shell ul,.article-shell ol{padding-left:1.5em}
-    .article-shell blockquote{margin:1.5em 0;padding:.9em 1.1em;border-left:4px solid var(--gold);background:rgba(179,138,74,.08);border-radius:0 12px 12px 0;color:var(--dark)}
-    .article-shell pre{overflow:auto;background:#f3f6f1;padding:1em;border:1px solid var(--line);border-radius:14px;line-height:1.7}
-    .article-shell code{font-family:Consolas,"Liberation Mono",Menlo,monospace;background:rgba(83,122,101,.08);padding:.15em .35em;border-radius:6px}
-    .article-shell pre code{background:transparent;padding:0}
-    .article-shell a{color:var(--green);text-decoration:underline;text-underline-offset:2px}
-    .article-shell img{max-width:100%;border-radius:12px;border:1px solid var(--line)}
-    .article-shell table{width:100%;border-collapse:collapse;margin:1.2em 0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
-    .article-shell th,.article-shell td{padding:.7em .8em;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-    .article-shell th{background:rgba(83,122,101,.06)}
-    .article-shell hr{border:none;border-top:1px solid var(--line);margin:2em 0}
-    .article-shell .source-link{display:inline-block;margin-top:20px;color:var(--muted);font-size:.9rem}
-    .article-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px;padding-top:16px;border-top:1px solid var(--line)}
-    .article-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 16px;border:1px solid var(--line);border-radius:999px;text-decoration:none;background:rgba(255,255,255,.5);color:var(--dark)}
-    .article-nav a:hover{border-color:#adc4b0;background:rgba(83,122,101,.04)}
-    .article-nav .nav-group{display:flex;gap:10px;flex-wrap:wrap}
-    .status{padding:22px;border:1px dashed #cbd8cc;border-radius:16px;color:var(--muted);text-align:center;background:rgba(255,255,255,.55)}
-    footer{border-top:1px solid var(--line);padding:24px 0 34px;color:var(--muted);font-size:.88rem}
-    .footer-inner{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}footer a{text-decoration:none}footer a:hover{color:var(--dark)}
-    @media(max-width:768px){.article-shell h1,.article-shell h2,.article-shell h3,.article-shell h4{font-weight:800;letter-spacing:.01em}.article-shell h1{font-size:clamp(1.9rem,8vw,2.6rem);line-height:1.3}.article-shell h2{font-size:clamp(1.5rem,6vw,2.1rem)}.article-shell h3{font-size:clamp(1.15rem,4.8vw,1.5rem)}.article-shell p,.article-shell li,.article-shell blockquote,.article-shell td,.article-shell th{font-size:1.04rem}} 
-    @media(max-width:680px){.topbar{align-items:flex-start}.article-nav{flex-direction:column;align-items:stretch}.article-nav .nav-group{width:100%}.article-nav a{width:100%}}
+    :root {
+      --bg: #FAFAF7;
+      --surface: #FFFFFF;
+      --surface-2: #F5F5F0;
+      --surface-3: #EFEEE8;
+      --text: #1A1A1A;
+      --text-muted: #4A4A45;
+      --text-subtle: #6B6B66;
+      --accent: #D97757;
+      --accent-hover: #C56843;
+      --accent-soft: #FBEEE6;
+      --accent-border: #F0D5C4;
+      --accent-strong: #A85533;
+      --border: #E5E4DC;
+      --border-strong: #CDCDC4;
+      --code-bg: #F5F2EC;
+      --code-text: #2A2A2A;
+      --info: #2563EB;
+      --info-soft: #EFF6FF;
+      --info-border: #BFDBFE;
+      --warn: #B45309;
+      --warn-soft: #FFFBEB;
+      --warn-border: #FDE68A;
+      --danger: #B91C1C;
+      --danger-soft: #FEF2F2;
+      --danger-border: #FECACA;
+      --success: #047857;
+      --success-soft: #ECFDF5;
+      --success-border: #A7F3D0;
+      --decision: #6D28D9;
+      --decision-soft: #F5F3FF;
+      --decision-border: #DDD6FE;
+      --shadow-sm: 0 1px 2px rgba(20, 14, 8, 0.04);
+      --shadow: 0 1px 2px rgba(20, 14, 8, 0.04), 0 4px 12px rgba(20, 14, 8, 0.06);
+      --shadow-lg: 0 8px 24px rgba(20, 14, 8, 0.10);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --radius-lg: 16px;
+      --font-sans: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
+      --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      --z-progress: 200;
+      --z-topbar: 100;
+      --z-drawer: 300;
+      --z-backdrop: 250;
+    }
+
+    [data-theme="dark"] {
+      --bg: #1A1714;
+      --surface: #221E1A;
+      --surface-2: #2A2520;
+      --surface-3: #322C26;
+      --text: #F5F0E8;
+      --text-muted: #C8C0B6;
+      --text-subtle: #9A938A;
+      --accent: #E89572;
+      --accent-hover: #F2A87F;
+      --accent-soft: #3A2A22;
+      --accent-border: #5A3D2E;
+      --accent-strong: #F5B493;
+      --border: #2E2924;
+      --border-strong: #463F38;
+      --code-bg: #1E1B17;
+      --code-text: #E8E2D8;
+      --info: #93C5FD;
+      --info-soft: #1E2A3D;
+      --info-border: #2A4365;
+      --warn: #FBBF24;
+      --warn-soft: #332817;
+      --warn-border: #5C4520;
+      --danger: #FCA5A5;
+      --danger-soft: #3A1F1F;
+      --danger-border: #5C2A2A;
+      --success: #6EE7B7;
+      --success-soft: #1A3329;
+      --success-border: #1F5C45;
+      --decision: #C4B5FD;
+      --decision-soft: #2A1F40;
+      --decision-border: #4A3870;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 16px;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    ::selection { background: var(--accent-soft); color: var(--accent-strong); }
+
+    .skip-link {
+      position: absolute;
+      top: -100px; left: 8px;
+      padding: 10px 16px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+      z-index: 1000;
+      transition: top 0.15s;
+    }
+    .skip-link:focus { top: 8px; }
+
+    .icon-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+    .icon { display: inline-block; flex-shrink: 0; vertical-align: middle; stroke: currentColor; fill: none; }
+
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0;
+      background: var(--accent);
+      z-index: var(--z-progress);
+      transition: width 0.05s linear;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: var(--z-topbar);
+      background: rgba(250, 250, 247, 0.85);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    [data-theme="dark"] .topbar { background: rgba(26, 23, 20, 0.85); }
+    .topbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: var(--text);
+      font-size: 15px;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+    }
+    .brand-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-soft);
+      animation: brand-pulse 2.8s ease-in-out infinite;
+    }
+    @keyframes brand-pulse {
+      0%, 100% { box-shadow: 0 0 0 4px var(--accent-soft); }
+      50% { box-shadow: 0 0 0 7px transparent; }
+    }
+    .topbar-actions { display: flex; gap: 6px; align-items: center; }
+    .icon-btn {
+      width: 40px; height: 40px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+      padding: 0;
+      text-decoration: none;
+    }
+    .icon-btn .icon { width: 18px; height: 18px; stroke-width: 2; }
+    .icon-btn[hidden] { display: none; }
+
+    .layout {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 48px;
+      padding: 32px 24px 96px;
+    }
+    .content { min-width: 0; }
+
+    .toc {
+      position: sticky;
+      top: 80px;
+      align-self: start;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+    .toc::-webkit-scrollbar { width: 6px; }
+    .toc::-webkit-scrollbar-track { background: transparent; }
+    .toc::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+    .toc-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 12px 12px;
+    }
+    .toc-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-subtle);
+      margin: 0;
+    }
+    .toc-close { display: none; }
+    .toc-nav { display: flex; flex-direction: column; gap: 2px; }
+    .toc-nav a {
+      display: flex; align-items: center;
+      min-height: 36px;
+      padding: 8px 14px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13.5px;
+      border-left: 2px solid transparent;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+      line-height: 1.4;
+    }
+    .toc-nav a.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: var(--accent-soft);
+      font-weight: 500;
+    }
+    .toc-nav a.lvl-3 { padding-left: 26px; font-size: 12.5px; }
+    .toc-backdrop {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: var(--z-backdrop);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .reader-article {
+      min-width: 0;
+    }
+
+    .doc-header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-eyebrow {
+      display: inline-flex; align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      border: 1px solid var(--accent-border);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+    }
+    .doc-title {
+      font-size: clamp(28px, 3vw + 16px, 40px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin: 0 0 12px;
+      color: var(--text);
+      text-wrap: balance;
+    }
+    .doc-subtitle {
+      font-size: clamp(15px, 0.6vw + 13px, 18px);
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin: 0 0 20px;
+      max-width: 75ch;
+      text-wrap: pretty;
+    }
+    .doc-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--text-subtle);
+    }
+    .doc-meta-item { display: inline-flex; align-items: center; gap: 6px; }
+    .doc-meta .icon { width: 14px; height: 14px; stroke-width: 2; }
+
+    .content h1, .content h2, .content h3, .content h4 {
+      color: var(--text);
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      scroll-margin-top: 80px;
+      text-wrap: balance;
+    }
+    .content h2 {
+      font-size: 26px;
+      font-weight: 600;
+      margin: 56px 0 16px;
+      padding-top: 8px;
+      position: relative;
+    }
+    .content h3 {
+      font-size: 19px;
+      font-weight: 600;
+      margin: 36px 0 12px;
+      position: relative;
+    }
+    .content h4 {
+      font-size: 13px;
+      font-weight: 600;
+      margin: 24px 0 8px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .content > p,
+    .content > ul,
+    .content > ol,
+    .content > blockquote { max-width: 75ch; }
+    .content p { margin: 0 0 16px; text-wrap: pretty; overflow-wrap: anywhere; }
+    .content a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-border); }
+    .content ul, .content ol { padding-left: 24px; margin: 0 0 16px; }
+    .content li { margin: 4px 0; }
+    .content strong { color: var(--text); font-weight: 600; }
+    .content em { color: var(--text-muted); }
+    .content hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+    .anchor {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 24px; height: 24px;
+      margin-left: 6px;
+      color: var(--text-subtle);
+      opacity: 0;
+      transform: translateY(-1px);
+      transition: opacity 0.15s, color 0.15s;
+      border-bottom: none !important;
+      border-radius: var(--radius-sm);
+    }
+    .anchor .icon { width: 14px; height: 14px; stroke-width: 2; }
+
+    .content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      margin: 20px 0;
+      display: block;
+    }
+    .content figure { margin: 20px 0; }
+    .content figure img { margin: 0; }
+    .content figcaption {
+      font-size: 13px;
+      color: var(--text-subtle);
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .content code {
+      font-family: var(--font-mono);
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.88em;
+      color: var(--code-text);
+      border: 1px solid var(--border);
+      overflow-wrap: anywhere;
+    }
+    .content pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      overflow-x: auto;
+      font-size: 13.5px;
+      line-height: 1.6;
+      margin: 16px 0;
+      position: relative;
+    }
+    .content pre code {
+      background: none; padding: 0; border: none;
+      color: var(--code-text);
+      font-size: inherit;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 8px; right: 8px;
+      width: 32px; height: 32px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      color: var(--text-subtle);
+      opacity: 0;
+      transition: opacity 0.15s, color 0.15s, border-color 0.15s;
+      padding: 0;
+    }
+    .copy-btn .icon { width: 14px; height: 14px; stroke-width: 2; }
+    .copy-btn.copied { color: var(--success); border-color: var(--success-border); opacity: 1; }
+
+    .content blockquote {
+      margin: 20px 0;
+      padding: 4px 20px;
+      border-left: 3px solid var(--accent-border);
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .content table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: var(--surface);
+      margin: 20px 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .content th {
+      background: var(--surface-2);
+      color: var(--text);
+      font-weight: 600;
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .content td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    .content tr:last-child td { border-bottom: none; }
+
+    .content .task-list-item { list-style: none; margin-left: -22px; }
+    .content .task-list-item-checkbox {
+      margin-right: 8px;
+      vertical-align: -2px;
+      accent-color: var(--accent);
+    }
+
+    .content sup a,
+    .content .footnote-ref a {
+      font-size: 0.75em;
+      vertical-align: super;
+      border-bottom: none;
+      padding: 0 2px;
+    }
+
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent-border);
+      font-size: 0.95rem;
+    }
+
+    .article-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .article-nav a, .article-nav span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      text-decoration: none;
+      background: var(--surface);
+      color: var(--text-muted);
+      transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+    }
+    .article-nav .nav-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .article-nav a:hover {
+      border-color: var(--accent-border);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .status {
+      padding: 24px 18px;
+      border: 1px dashed var(--border-strong);
+      border-radius: 16px;
+      background: var(--surface);
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .doc-footer {
+      margin-top: 80px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-subtle);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .doc-footer a { color: var(--accent); text-decoration: none; }
+
+    *:focus { outline: none; }
+    *:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: var(--radius-sm);
+    }
+    .toc-nav a:focus-visible { outline-offset: -2px; }
+    .icon-btn:focus-visible { outline-offset: 2px; }
+    .anchor:focus-visible { opacity: 1; outline-offset: 2px; }
+
+    @media (hover: hover) {
+      .icon-btn:hover { color: var(--accent); border-color: var(--accent-border); background: var(--accent-soft); }
+      .toc-nav a:hover { color: var(--accent); background: var(--accent-soft); }
+      .content a:hover { color: var(--accent-hover); border-bottom-color: var(--accent); }
+      .anchor:hover { color: var(--accent); }
+      .content h2:hover .anchor,
+      .content h3:hover .anchor { opacity: 1; }
+      .copy-btn:hover { color: var(--accent); border-color: var(--accent-border); }
+      .content pre:hover .copy-btn { opacity: 1; }
+    }
+
+    @media (hover: none) {
+      .copy-btn { opacity: 0.6; }
+      .anchor { opacity: 0.4; }
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 20px 16px 80px;
+      }
+      .topbar-inner { padding: 8px 12px; }
+      .doc-header { margin-bottom: 28px; padding-bottom: 20px; }
+      .toc-mobile-trigger { display: inline-flex !important; }
+
+      .toc {
+        position: fixed;
+        top: 0; left: 0;
+        width: min(300px, 82vw);
+        height: 100dvh;
+        max-height: 100dvh;
+        background: var(--surface);
+        z-index: var(--z-drawer);
+        padding: 16px 8px 24px 16px;
+        box-shadow: var(--shadow-lg);
+        transform: translateX(-105%);
+        transition: transform 0.25s ease;
+      }
+      .toc-head { padding: 4px 4px 12px 8px; }
+      .toc-close {
+        display: inline-flex !important;
+        width: 36px; height: 36px;
+        align-items: center; justify-content: center;
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: var(--radius-sm);
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 0;
+      }
+      .toc-close .icon { width: 18px; height: 18px; stroke-width: 2; }
+      body.toc-open .toc { transform: translateX(0); }
+      body.toc-open .toc-backdrop {
+        display: block;
+        opacity: 1;
+      }
+      .toc-backdrop {
+        display: block;
+        opacity: 0;
+        pointer-events: none;
+      }
+      body.toc-open .toc-backdrop { pointer-events: auto; }
+      body.toc-open { overflow: hidden; }
+    }
+    @media (min-width: 901px) {
+      .toc-mobile-trigger { display: none !important; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      html { scroll-behavior: auto; }
+      .brand-dot { animation: none; box-shadow: 0 0 0 4px var(--accent-soft); }
+    }
+
+    @media print {
+      .topbar, .toc, .toc-backdrop, .icon-btn, .copy-btn, .anchor, .scroll-progress { display: none !important; }
+      .layout { grid-template-columns: 1fr; padding: 0; max-width: 100%; }
+      body { background: #fff; color: #000; }
+      a { color: #000; }
+      .content pre, .content table { break-inside: avoid; }
+      .doc-footer { break-before: avoid; }
+    }
   </style>
 </head>
 <body>
-  <header class="wrap">
-    <nav class="topbar" aria-label="主导航">
-      <a class="brand" href="./index.html">DAO<span>SIGHT</span></a>
-      <a class="back" href="./index.html">← 返回栏目</a>
-    </nav>
+  <a href="#main" class="skip-link">跳到正文</a>
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+  <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2Z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13h6"/><path d="M9 17h6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="i-printer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14" rx="2"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m4.93 19.07 1.41-1.41"/><path d="m17.66 6.34 1.41-1.41"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M6 16H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  </svg>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <button class="icon-btn toc-mobile-trigger" id="toc-toggle" onclick="openToc()" aria-label="打开目录" title="打开目录">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-menu"/></svg>
+        </button>
+        <span class="brand-dot" aria-hidden="true"></span>
+        <a href="./index.html" class="brand" aria-label="DaoSight 首页">
+          <span>DAO<span style="color: var(--accent);">SIGHT</span></span>
+        </a>
+      </div>
+      <div class="topbar-actions">
+        <a class="icon-btn" href="./index.html" title="返回栏目" aria-label="返回栏目">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-left"/></svg>
+        </a>
+        <button class="icon-btn" onclick="window.print()" title="打印文章" aria-label="打印文章">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-printer"/></svg>
+        </button>
+        <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()" title="切换主题" aria-label="切换主题">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use id="theme-icon-use" href="#i-moon"/></svg>
+        </button>
+      </div>
+    </div>
   </header>
 
-  <main class="wrap">
-    <article id="reader" class="article-shell" aria-live="polite">
-      <div class="status">正在加载文章……</div>
-    </article>
-  </main>
+  <div class="toc-backdrop" onclick="closeToc()" aria-hidden="true"></div>
 
-  <footer>
-    <div class="wrap footer-inner">
-      <span>© DaoSight · 思想与世界的探索</span>
-      <a href="./index.html">返回修行探索栏目 ↑</a>
-    </div>
-  </footer>
+  <div class="layout">
+    <aside class="toc" id="toc" aria-label="文章目录">
+      <div class="toc-head">
+        <p class="toc-title">目录</p>
+        <button class="toc-close" onclick="closeToc()" aria-label="关闭目录">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg>
+        </button>
+      </div>
+      <nav class="toc-nav" id="toc-nav"></nav>
+    </aside>
+
+    <main class="content" id="main">
+      <article id="reader" class="reader-article" aria-live="polite">
+        <div class="status">正在加载文章……</div>
+      </article>
+    </main>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
     (function () {
       var reader = document.getElementById('reader');
+      var tocNav = document.getElementById('toc-nav');
+      var themeToggle = document.getElementById('theme-toggle');
+      var themeIconUse = document.getElementById('theme-icon-use');
 
-      function toSafeText(value) {
+      function safeString(value) {
         if (value == null) return '';
         if (typeof value === 'string') return value;
         if (typeof value === 'number' || typeof value === 'boolean') return String(value);
-        if (Array.isArray(value)) return value.map(toSafeText).join('');
+        if (Array.isArray(value)) return value.map(safeString).join('');
         if (typeof value === 'object') {
           if (typeof value.text === 'string') return value.text;
           if (typeof value.raw === 'string') return value.raw;
           if (typeof value.tokens === 'object') {
-            return Array.isArray(value.tokens) ? value.tokens.map(function (token) { return toSafeText(token); }).join('') : '';
+            return Array.isArray(value.tokens) ? value.tokens.map(function (token) { return safeString(token); }).join('') : '';
           }
           return String(value);
         }
@@ -94,11 +721,20 @@
       }
 
       function normalizeHeadingText(value) {
-        return toSafeText(value)
+        return safeString(value)
           .replace(/<[^>]+>/g, '')
           .replace(/[“”‘’]/g, '')
+          .replace(/[\u2014\u2013]/g, '-')
           .replace(/[^\u4e00-\u9fa5a-z0-9\s-]/g, '')
           .trim();
+      }
+
+      function slugify(text) {
+        return normalizeHeadingText(text)
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-');
       }
 
       function resolveFileParam() {
@@ -111,18 +747,101 @@
       }
 
       function resolveRelativeFetchUrl(relativePath) {
-        var cleaned = toSafeText(relativePath).replace(/^\.\//, '').replace(/^\//, '');
+        var cleaned = safeString(relativePath).replace(/^\.\//, '').replace(/^\//, '');
         return './' + cleaned;
       }
 
       function resolveMarkdownLink(target, basePath) {
         if (!target || target.indexOf('#') === 0) return target;
         if (/^https?:\/\//i.test(target) || /^mailto:/i.test(target) || /^data:/i.test(target)) return target;
-        var normalized = toSafeText(target).replace(/\\/g, '/');
-        var baseDir = toSafeText(basePath).split('/').slice(0, -1).join('/');
+
+        var normalized = safeString(target).replace(/\\/g, '/');
+        var baseDir = safeString(basePath).split('/').slice(0, -1).join('/');
         var candidate = normalized.indexOf('/') === 0 ? normalized.slice(1) : normalized;
         var cleaned = candidate.indexOf('daoroad/') === 0 ? candidate : (baseDir && baseDir !== 'daoroad' ? baseDir + '/' + candidate : 'daoroad/' + candidate);
         return './reader.html?f=' + encodeURIComponent(cleaned.replace(/^\.\//, ''));
+      }
+
+      function getPreferredTheme() {
+        var saved = localStorage.getItem('dao-theme');
+        if (saved === 'dark' || saved === 'light') return saved;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+
+      function applyTheme(mode) {
+        var next = mode === 'dark' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('dao-theme', next);
+        if (themeIconUse) {
+          themeIconUse.setAttribute('href', next === 'dark' ? '#i-sun' : '#i-moon');
+        }
+      }
+
+      function toggleTheme() {
+        var current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+      }
+
+      function openToc() {
+        document.body.classList.add('toc-open');
+      }
+
+      function closeToc() {
+        document.body.classList.remove('toc-open');
+      }
+
+      function setScrollProgress() {
+        var el = document.getElementById('scroll-progress');
+        if (!el) return;
+        var scrollTop = window.scrollY || document.documentElement.scrollTop;
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        var ratio = max > 0 ? (scrollTop / max) * 100 : 0;
+        el.style.width = ratio + '%';
+      }
+
+      function buildToc() {
+        if (!tocNav) return;
+        var headings = Array.prototype.slice.call(document.querySelectorAll('.content h2, .content h3'));
+        tocNav.innerHTML = '';
+
+        if (!headings.length) {
+          var emptyItem = document.createElement('a');
+          emptyItem.href = '#';
+          emptyItem.textContent = '无二级标题';
+          emptyItem.className = 'active';
+          emptyItem.onclick = function (event) { event.preventDefault(); };
+          tocNav.appendChild(emptyItem);
+          return;
+        }
+
+        headings.forEach(function (heading) {
+          var text = heading.textContent.trim();
+          if (!text) return;
+          var id = heading.id || slugify(text);
+          heading.id = id;
+          var link = document.createElement('a');
+          link.href = '#' + id;
+          link.textContent = text;
+          if (heading.tagName === 'H3') link.classList.add('lvl-3');
+          link.addEventListener('click', function () {
+            closeToc();
+          });
+          tocNav.appendChild(link);
+        });
+
+        var currentLinks = Array.prototype.slice.call(tocNav.querySelectorAll('a'));
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            currentLinks.forEach(function (link) {
+              link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+            });
+          });
+        }, { rootMargin: '-80px 0px -60% 0px', threshold: [0.15, 0.6] });
+
+        headings.forEach(function (heading) {
+          observer.observe(heading);
+        });
       }
 
       function displayError(message) {
@@ -130,94 +849,138 @@
       }
 
       function createNav(prevPath, nextPath) {
-        var listHref = './index.html';
         var prevLink = prevPath ? '<a href="./reader.html?f=' + encodeURIComponent(prevPath) + '">← 上一篇</a>' : '<span style="opacity:.45;pointer-events:none;">← 上一篇</span>';
         var nextLink = nextPath ? '<a href="./reader.html?f=' + encodeURIComponent(nextPath) + '">下一篇 →</a>' : '<span style="opacity:.45;pointer-events:none;">下一篇 →</span>';
-        return '<div class="article-nav"><a href="' + listHref + '">返回列表</a><div class="nav-group">' + prevLink + nextLink + '</div></div>';
+        return '<div class="article-nav"><a href="./index.html">返回列表</a><div class="nav-group">' + prevLink + nextLink + '</div></div>';
+      }
+
+      function renderMarkdown(text, fileParam) {
+        var renderer = new marked.Renderer();
+
+        renderer.heading = function (headingText, level, raw, slugger) {
+          var text = normalizeHeadingText(headingText);
+          var id = slugify(text || raw || 'section');
+          return '<h' + level + ' id="' + id + '">' + text + '<a class="anchor" href="#' + id + '" aria-label="链接到标题"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-link"/></svg></a></h' + level + '>';
+        };
+
+        renderer.link = function (href, title, text) {
+          var cleanHref = safeString(href || '');
+          var target = cleanHref.indexOf('http') === 0 || cleanHref.indexOf('mailto:') === 0 || cleanHref.indexOf('data:') === 0 ? '_blank' : '_self';
+          var resolvedHref = cleanHref.indexOf('http') === 0 || cleanHref.indexOf('mailto:') === 0 || cleanHref.indexOf('data:') === 0 ? cleanHref : resolveMarkdownLink(cleanHref, fileParam);
+          var attrTitle = title ? ' title="' + safeString(title).replace(/"/g, '&quot;') + '"' : '';
+          return '<a href="' + resolvedHref + '" target="' + target + '" rel="noopener noreferrer"' + attrTitle + '>' + safeString(text) + '</a>';
+        };
+
+        renderer.image = function (href, title, text) {
+          var imageHref = safeString(href);
+          var source = /^https?:\/\//i.test(imageHref) ? imageHref : new URL(imageHref.indexOf('/') === 0 ? imageHref : './' + imageHref.replace(/^\.\//, ''), window.location.href).href;
+          var alt = safeString(text || '');
+          var titleAttr = title ? ' title="' + safeString(title).replace(/"/g, '&quot;') + '"' : '';
+          return '<img src="' + source + '" alt="' + alt + '"' + titleAttr + ' loading="lazy">';
+        };
+
+        var html = marked.parse(text, {
+          gfm: true,
+          breaks: true,
+          headerIds: false,
+          smartLists: true,
+          smartypants: true,
+          renderer: renderer
+        });
+
+        return html;
+      }
+
+      function renderArticle(fileParam) {
+        var articleName = fileParam.split('/').pop().replace(/\.(md|markdown)$/i, '');
+        var label = articleName.replace(/[-_]/g, ' ');
+        var fetchUrl = resolveRelativeFetchUrl(fileParam.startsWith('daoroad/') ? fileParam.replace(/^daoroad\//, '') : fileParam);
+
+        fetch(fetchUrl)
+          .then(function (response) {
+            if (!response.ok) {
+              throw new Error('无法获取文章内容。');
+            }
+            return response.text();
+          })
+          .then(function (markdownText) {
+            var html = renderMarkdown(markdownText, fileParam);
+            var readTime = Math.max(1, Math.ceil((markdownText.replace(/<[^>]+>/g, '').match(/\S+/g) || []).length / 220));
+            var relativePath = fileParam.replace(/^daoroad\//, '');
+            var sourceHref = 'https://github.com/DaoSight/daosight.github.io/blob/main/' + (fileParam.indexOf('daoroad/') === 0 ? fileParam : 'daoroad/' + fileParam);
+
+            reader.innerHTML = [
+              '<header class="doc-header">',
+              '  <span class="doc-eyebrow">Markdown</span>',
+              '  <h1 class="doc-title">' + label + '</h1>',
+              '  <p class="doc-subtitle">' + relativePath + '</p>',
+              '  <div class="doc-meta">',
+              '    <span class="doc-meta-item"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-file"/></svg>' + relativePath + '</span>',
+              '    <span class="doc-meta-item"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-calendar"/></svg>最新更新</span>',
+              '    <span class="doc-meta-item"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-clock"/></svg>' + readTime + ' 分钟阅读</span>',
+              '  </div>',
+              '</header>',
+              '<div class="content">' + html + '</div>',
+              '<a class="source-link" href="' + sourceHref + '" target="_blank" rel="noopener noreferrer">查看源文件</a>',
+              '</article>'
+            ].join('');
+
+            document.title = label + '｜DaoSight';
+            buildToc();
+
+            return fetch('https://api.github.com/repos/DaoSight/daosight.github.io/contents/daoroad', {
+              headers: { Accept: 'application/vnd.github+json' }
+            });
+          })
+          .then(function (response) {
+            if (!response || !response.ok) return;
+            return response.json();
+          })
+          .then(function (files) {
+            if (!files || !Array.isArray(files)) return;
+            var articles = files.filter(function (file) {
+              return file.type === 'file' && /\.(md|markdown)$/i.test(file.name);
+            }).sort(function (a, b) {
+              return a.name.localeCompare(b.name, 'zh-CN');
+            });
+
+            if (!articles.length) return;
+            var targetPath = fileParam.indexOf('daoroad/') === 0 ? fileParam : 'daoroad/' + fileParam;
+            var index = articles.findIndex(function (item) {
+              return item.path === targetPath;
+            });
+            if (index < 0) return;
+            var prevPath = index > 0 ? articles[index - 1].path.replace(/^daoroad\//, '') : null;
+            var nextPath = index < articles.length - 1 ? articles[index + 1].path.replace(/^daoroad\//, '') : null;
+            var nav = createNav(prevPath, nextPath);
+            var sourceLink = reader.querySelector('.source-link');
+            if (sourceLink) sourceLink.insertAdjacentHTML('afterend', nav);
+          })
+          .catch(function (error) {
+            displayError('文章加载失败：' + error.message + '<br>请确认链接是否正确，或返回栏目页重试。');
+          });
       }
 
       var fileParam = resolveFileParam();
       if (!fileParam || !/\.(md|markdown)$/i.test(fileParam)) {
         displayError('未提供有效的 Markdown 文件参数。请从栏目页点击文章进入。');
-        return;
+      } else {
+        renderArticle(fileParam);
       }
 
-      var label = fileParam.split('/').pop().replace(/\.(md|markdown)$/i, '');
-      var fetchUrl = resolveRelativeFetchUrl(fileParam.startsWith('daoroad/') ? fileParam.replace(/^daoroad\//, '') : fileParam);
+      applyTheme(getPreferredTheme());
+      window.addEventListener('scroll', setScrollProgress, { passive: true });
+      window.addEventListener('resize', setScrollProgress);
+      setScrollProgress();
 
-      var renderer = new marked.Renderer();
-      renderer.heading = function (text, level, raw) {
-        var headingText = normalizeHeadingText(text);
-        var id = headingText.toLowerCase().replace(/\s+/g, '-');
-        return '<h' + level + ' id="' + id + '">' + headingText + '</h' + level + '>';
-      };
-      renderer.link = function (href, title, text) {
-        var cleanHref = toSafeText(href || '');
-        var target = cleanHref.indexOf('http') === 0 || cleanHref.indexOf('mailto:') === 0 || cleanHref.indexOf('data:') === 0 ? '_blank' : '_self';
-        var resolvedHref = cleanHref.indexOf('http') === 0 || cleanHref.indexOf('mailto:') === 0 || cleanHref.indexOf('data:') === 0 ? cleanHref : resolveMarkdownLink(cleanHref, fileParam);
-        var attrTitle = title ? ' title="' + toSafeText(title).replace(/\"/g, '&quot;') + '"' : '';
-        return '<a href="' + resolvedHref + '" target="' + target + '" rel="noopener noreferrer"' + attrTitle + '>' + toSafeText(text) + '</a>';
-      };
-      renderer.image = function (href, title, text) {
-        var imageHref = toSafeText(href);
-        var source = /^https?:\/\//i.test(imageHref) ? imageHref : new URL(imageHref.indexOf('/') === 0 ? imageHref : './' + imageHref.replace(/^\.\//, ''), window.location.href).href;
-        var alt = toSafeText(text || '');
-        var titleAttr = title ? ' title="' + toSafeText(title).replace(/\"/g, '&quot;') + '"' : '';
-        return '<img src="' + source + '" alt="' + alt + '"' + titleAttr + ' loading="lazy">';
-      };
-
-      fetch(fetchUrl)
-        .then(function (response) {
-          if (!response.ok) {
-            throw new Error('无法获取文章内容。');
-          }
-          return response.text();
-        })
-        .then(function (text) {
-          var html = marked.parse(text, {
-            gfm: true,
-            breaks: true,
-            headerIds: false,
-            smartLists: true,
-            smartypants: true,
-            renderer: renderer
-          });
-
-          var sourceHref = 'https://github.com/DaoSight/daosight.github.io/blob/main/' + (fileParam.indexOf('daoroad/') === 0 ? fileParam : 'daoroad/' + fileParam);
-          reader.innerHTML = '<div class="meta"><span>Markdown</span><span>' + fileParam.replace(/^daoroad\//, '') + '</span></div><h1>' + label.replace(/[-_]/g, ' ') + '</h1>' + html + '<a class="source-link" href="' + sourceHref + '" target="_blank" rel="noopener noreferrer">查看 GitHub 原文 ↗</a>';
-          document.title = label.replace(/[-_]/g, ' ') + '｜DaoSight';
-
-          return fetch('https://api.github.com/repos/DaoSight/daosight.github.io/contents/daoroad', {
-            headers: { Accept: 'application/vnd.github+json' }
-          });
-        })
-        .then(function (response) {
-          if (!response.ok) return;
-          return response.json();
-        })
-        .then(function (files) {
-          if (!files || !Array.isArray(files)) return;
-          var articles = files.filter(function (file) {
-            return file.type === 'file' && /\.(md|markdown)$/i.test(file.name);
-          }).sort(function (a, b) {
-            return a.name.localeCompare(b.name, 'zh-CN');
-          });
-
-          if (!articles.length) return;
-          var targetPath = fileParam.indexOf('daoroad/') === 0 ? fileParam : 'daoroad/' + fileParam;
-          var index = articles.findIndex(function (item) {
-            return item.path === targetPath;
-          });
-          if (index < 0) return;
-          var prevPath = index > 0 ? articles[index - 1].path.replace(/^daoroad\//, '') : null;
-          var nextPath = index < articles.length - 1 ? articles[index + 1].path.replace(/^daoroad\//, '') : null;
-          var nav = createNav(prevPath, nextPath);
-          var articleBody = reader.querySelector('.source-link');
-          if (articleBody) articleBody.insertAdjacentHTML('afterend', nav);
-        })
-        .catch(function (error) {
-          displayError('文章加载失败：' + error.message + '<br>请确认链接是否正确，或返回栏目页重试。');
-        });
+      document.getElementById('toc-toggle') && document.getElementById('toc-toggle').addEventListener('click', function () {
+        var body = document.body;
+        if (body.classList.contains('toc-open')) {
+          closeToc();
+        } else {
+          openToc();
+        }
+      });
     }());
   </script>
 </body>
