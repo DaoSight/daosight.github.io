@@ -95,7 +95,7 @@
         for (const file of articles) {
           const link = document.createElement("a");
           link.className = "article";
-          link.href = "./" + encodeURIComponent(file.name);
+          link.href = (/\.(md|markdown)$/i).test(file.name) ? "../reader.html?f=" + encodeURIComponent(file.path) : "./" + encodeURIComponent(file.name);
           const tag = document.createElement("span"); tag.className = "tag"; tag.textContent = "意识与存在";
           const heading = document.createElement("h3");
           heading.textContent = file.name.replace(/\.html?$/i, "").replace(/[-_]/g, " ");

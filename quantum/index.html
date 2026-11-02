@@ -65,7 +65,7 @@ const articles=files.filter(file=>file.type==="file"&&/\.html?$/i.test(file.name
 if(!articles.length){list.innerHTML='<div class="status">暂时没有发现其他 HTML 文章。请将文章提交到 <code>quantum/</code> 目录。</div>';return;}
 list.replaceChildren();
 for(const file of articles){
-const link=document.createElement("a");link.className="article";link.href="./"+encodeURIComponent(file.name);
+const link=document.createElement("a");link.className="article";link.href=(/\.(md|markdown)$/i).test(file.name)?"../reader.html?f="+encodeURIComponent(file.path):"./"+encodeURIComponent(file.name);
 const tag=document.createElement("span");tag.className="tag";tag.textContent="量子心解";
 const heading=document.createElement("h3");heading.textContent=file.name.replace(/\.html?$/i,"").replace(/[-_]/g," ");
 const desc=document.createElement("p");desc.textContent="打开文章，继续探索本栏目关注的问题。";
