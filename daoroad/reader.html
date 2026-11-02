@@ -33,14 +33,8 @@
     }
     a { color: inherit; }
 
-    .wrap {
-      width: min(1080px, calc(100% - 36px));
-      margin: 0 auto;
-    }
-
-    header {
-      padding: 24px 0 0;
-    }
+    .wrap { width: min(1080px, calc(100% - 36px)); margin: 0 auto; }
+    header { padding: 24px 0 0; }
 
     .topbar {
       display: flex;
@@ -110,6 +104,7 @@
       line-height: 1.1;
       letter-spacing: -.03em;
       color: var(--dark);
+      font-weight: 800;
     }
 
     .article-meta {
@@ -140,9 +135,7 @@
       color: #24292f;
     }
 
-    .markdown-body > :first-child {
-      margin-top: 0;
-    }
+    .markdown-body > :first-child { margin-top: 0; }
 
     .markdown-body p,
     .markdown-body ul,
@@ -161,8 +154,8 @@
     .markdown-body h4,
     .markdown-body h5,
     .markdown-body h6 {
-      color: #24292f;
-      font-weight: 700;
+      color: #24292f !important;
+      font-weight: 600 !important;
       line-height: 1.35;
       letter-spacing: -.02em;
       margin-top: 24px;
@@ -208,10 +201,7 @@
       margin: 1.5em 0;
     }
 
-    .markdown-body figure {
-      margin: 1.5em 0;
-    }
-
+    .markdown-body figure { margin: 1.5em 0; }
     .markdown-body figcaption {
       text-align: center;
       color: var(--muted);
@@ -473,9 +463,7 @@
           renderer: renderer
         });
 
-        return DOMPurify.sanitize(html, {
-          ADD_ATTR: ['target', 'rel', 'loading']
-        });
+        return DOMPurify.sanitize(html, { ADD_ATTR: ['target', 'rel', 'loading'] });
       }
 
       function renderArticle(fileParam) {
